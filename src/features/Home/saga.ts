@@ -1,19 +1,22 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import axios from "axios";
+// src/features/Home/dashboardSaga.ts
+import { call, put, takeLatest } from 'redux-saga/effects';
+import axios, { AxiosResponse } from 'axios';
 import {
   fetchDashboardStatsStart,
   fetchDashboardStatsSuccess,
   fetchDashboardStatsFailure,
-} from "./slice";
-import { DashboardStats } from "./type";
-import { AxiosResponse } from "axios";
+} from './slice';
+import { DashboardStats } from './type';
 
-function* handleFetchDashboardStats(): Generator<any, void, AxiosResponse<DashboardStats>> {
+function* handleFetchDashboardStats() {
   try {
-    const response = yield call(axios.get, "/api/dashboard/stats");
+    const response: AxiosResponse<DashboardStats> = yield call(
+      axios.get,
+      '/api/dashboard/stats'
+    );
     yield put(fetchDashboardStatsSuccess(response.data));
-  } catch (error: any) {
-    yield put(fetchDashboardStatsFailure(error.message));
+  } catch (err: any) {
+    yield put(fetchDashboardStatsFailure(err.message));
   }
 }
 

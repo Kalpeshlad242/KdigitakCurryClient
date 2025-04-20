@@ -1,40 +1,41 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchDashboardStatsStart } from "./slice";
+// src/features/Home/components/Dashboard.tsx
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { fetchDashboardStatsStart } from './slice';
 import {
   selectDashboardStats,
   selectDashboardLoading,
   selectDashboardError,
-} from "./selector";
+} from './selector';
 
 const Dashboard: React.FC = () => {
-  const dispatch = useDispatch();
-  const stats = useSelector(selectDashboardStats);
-  const loading = useSelector(selectDashboardLoading);
-  const error = useSelector(selectDashboardError);
+  const dispatch = useAppDispatch();
+  const stats = useAppSelector(selectDashboardStats);
+  const loading = useAppSelector(selectDashboardLoading);
+  const error = useAppSelector(selectDashboardError);
 
   useEffect(() => {
     dispatch(fetchDashboardStatsStart());
   }, [dispatch]);
 
-  if (loading) return <p>Loading Dashboard...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>Loading dashboard...</p>;
+  if (error) return <p className="text-red-600">{error}</p>;
 
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Dashboard Overview</h1>
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 bg-blue-100 rounded shadow">
-          <p className="text-xl font-semibold">Courses</p>
-          <p>{stats?.totalCourses}</p>
+        <div className="p-4 bg-gray-100 rounded shadow">
+          <p className="text-lg">Total Courses</p>
+          <p className="text-3xl font-semibold">{stats?.totalCourses ?? 0}</p>
         </div>
-        <div className="p-4 bg-green-100 rounded shadow">
-          <p className="text-xl font-semibold">Lectures</p>
-          <p>{stats?.totalLectures}</p>
+        <div className="p-4 bg-gray-100 rounded shadow">
+          <p className="text-lg">Total Lectures</p>
+          <p className="text-3xl font-semibold">{stats?.totalLectures ?? 0}</p>
         </div>
-        <div className="p-4 bg-purple-100 rounded shadow">
-          <p className="text-xl font-semibold">Instructors</p>
-          <p>{stats?.totalInstructors}</p>
+        <div className="p-4 bg-gray-100 rounded shadow">
+          <p className="text-lg">Total Instructors</p>
+          <p className="text-3xl font-semibold">{stats?.totalInstructors ?? 0}</p>
         </div>
       </div>
     </div>

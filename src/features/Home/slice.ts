@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DashboardStats } from "./type";
+// src/features/Home/dashboardSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DashboardStats } from './type';
 
 interface DashboardState {
   stats: DashboardStats | null;
@@ -14,7 +15,7 @@ const initialState: DashboardState = {
 };
 
 const dashboardSlice = createSlice({
-  name: "dashboard",
+  name: 'dashboard',
   initialState,
   reducers: {
     fetchDashboardStatsStart(state) {
