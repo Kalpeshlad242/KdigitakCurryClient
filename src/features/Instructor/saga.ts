@@ -1,58 +1,66 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
+// src/features/Instructor/instructorSaga.ts
+import { call, put, takeLatest } from "redux-saga/effects";
+import axios, { AxiosResponse } from "axios";
 import {
-  fetchInstructorLectures,
-  fetchInstructorLecturesSuccess,
-  fetchInstructorLecturesFailure,
-  createInstructorLecture,
-  createInstructorLectureSuccess,
-  createInstructorLectureFailure,
-} from './slice';
-import { InstructorLecture } from './type';
-import axios from 'axios';
-import { toast } from 'react-toastify';  // For notifications (example)
+  fetchInstructorsStart,
+  fetchInstructorsSuccess,
+  fetchInstructorsFailure,
+  createInstructorStart,
+  createInstructorSuccess,
+  createInstructorFailure,
+  updateInstructorStart,
+  updateInstructorSuccess,
+  updateInstructorFailure,
+  deleteInstructorStart,
+  deleteInstructorSuccess,
+  deleteInstructorFailure,
+} from "./slice";
+import { Instructor } from "./type";
 
-function* handleFetchInstructorLectures(): SagaIterator {
+// Fetch all instructors
+function* handleFetchInstructors() {
   try {
-    // Show loading
-    toast.info('Loading lectures...');
-
-    const response = yield call(axios.get, '/api/instructor/lectures');
-    yield put(fetchInstructorLecturesSuccess(response.data));
-
-    // Hide loading and show success
-    toast.success('Lectures fetched successfully!');
+    const response: AxiosResponse<Instructor[]> = yield call(axios.get, "/api/instructors");
+    yield put(fetchInstructorsSuccess(response.data));
   } catch (error: any) {
-    yield put(fetchInstructorLecturesFailure(error.message));
-
-    // Show error message
-    toast.error(`Failed to load lectures: ${error.message}`);
+    yield put(fetchInstructorsFailure(error.message));
   }
 }
 
-function* handleCreateInstructorLecture(action: any): SagaIterator {
+// Create instructor
+function* handleCreateInstructor(action: ReturnType<typeof createInstructorStart>) {
   try {
-    // Show loading
-    toast.info('Creating lecture...');
-
-    const response = yield call(axios.post, '/api/instructor/lectures', action.payload);
-    yield put(createInstructorLectureSuccess(response.data));
-
-    // Show success
-    toast.success('Lecture created successfully!');
+    const response: AxiosResponse<Instructor> = yield call(axios.post, "/api/instructors", action.payload);
+    yield put(createInstructorSuccess(response.data));
   } catch (error: any) {
-    yield put(createInstructorLectureFailure(error.message));
-
-    // Show error
-    toast.error(`Failed to create lecture: ${error.message}`);
+    yield put(createInstructorFailure(error.message));
   }
 }
 
-// Watcher saga to handle all the instructor-related actions
-export default function* instructorSaga() {
-  // Fetch lectures
-  yield takeLatest(fetchInstructorLectures.type, handleFetchInstructorLectures);
+// Update instructor
+function* handleUpdateInstructor(action: ReturnType<typeof updateInstructorStart>) {
+  try {
+    const response: AxiosResponse<Instructor> = yield call(axios.put, `/api/instructors/${action.payload.id}`, action.payload);
+    yield put(updateInstructorSuccess(response.data));
+  } catch (error: any) {
+    yield put(updateInstructorFailure(error.message));
+  }
+}
 
-  // Create lecture
-  yield takeLatest(createInstructorLecture.type, handleCreateInstructorLecture);
+// Delete instructor
+function* handleDeleteInstructor(action: ReturnType<typeof deleteInstructorStart>) {
+  try {
+    yield call(axios.delete, `/api/instructors/${action.payload}`);
+    yield put(deleteInstructorSuccess(action.payload));
+  } catch (error: any) {
+    yield put(deleteInstructorFailure(error.message));
+  }
+}
+
+// Watcher saga
+export function* instructorSaga() {
+  yield takeLatest(fetchInstructorsStart.type, handleFetchInstructors);
+  yield takeLatest(createInstructorStart.type, handleCreateInstructor);
+  yield takeLatest(updateInstructorStart.type, handleUpdateInstructor);
+  yield takeLatest(deleteInstructorStart.type, handleDeleteInstructor);
 }

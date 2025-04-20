@@ -1,7 +1,12 @@
-export interface InstructorLecture {
+export interface Instructor {
   id: string;
-  courseName: string;
-  date: string;
-  time: string;
-  status: "Attended" | "Not Attended";
+  name: string;
+  email: string;
+  lectures: string[]; // or any[] or Lecture[] depending on your app
+}
+
+export interface InstructorState {
+  instructors: Instructor[];
+  loading: boolean;
+  error: string | null;
 }

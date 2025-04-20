@@ -1,14 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InstructorLecture } from './type';
-
-interface InstructorState {
-  lectures: InstructorLecture[];
-  loading: boolean;
-  error: string | null;
-}
+import { Instructor, InstructorState } from './type';
 
 const initialState: InstructorState = {
-  lectures: [],
+  instructors: [],
   loading: false,
   error: null,
 };
@@ -17,25 +11,52 @@ const instructorSlice = createSlice({
   name: 'instructor',
   initialState,
   reducers: {
-    fetchInstructorLectures: (state) => {
+    fetchInstructorsStart(state) {
       state.loading = true;
+      state.error = null;
     },
-    fetchInstructorLecturesSuccess: (state, action: PayloadAction<InstructorLecture[]>) => {
+    fetchInstructorsSuccess(state, action: PayloadAction<Instructor[]>) {
       state.loading = false;
-      state.lectures = action.payload;
+      state.instructors = action.payload;
     },
-    fetchInstructorLecturesFailure: (state, action: PayloadAction<string>) => {
+    fetchInstructorsFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
     },
-    createInstructorLecture: (state, action: PayloadAction<InstructorLecture>) => {
+    createInstructorStart(state, action: PayloadAction<Omit<Instructor, 'id'>>) {
       state.loading = true;
+      state.error = null;
     },
-    createInstructorLectureSuccess: (state, action: PayloadAction<InstructorLecture>) => {
+    createInstructorSuccess(state, action: PayloadAction<Instructor>) {
       state.loading = false;
-      state.lectures.push(action.payload); // Add new lecture to the list
+      state.instructors.push(action.payload);
     },
-    createInstructorLectureFailure: (state, action: PayloadAction<string>) => {
+    createInstructorFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    updateInstructorStart(state, action: PayloadAction<Instructor>) {
+      state.loading = true;
+      state.error = null;
+    },
+    updateInstructorSuccess(state, action: PayloadAction<Instructor>) {
+      state.loading = false;
+      const idx = state.instructors.findIndex(i => i.id === action.payload.id);
+      if (idx >= 0) state.instructors[idx] = action.payload;
+    },
+    updateInstructorFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    deleteInstructorStart(state, action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    deleteInstructorSuccess(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.instructors = state.instructors.filter(i => i.id !== action.payload);
+    },
+    deleteInstructorFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -43,12 +64,18 @@ const instructorSlice = createSlice({
 });
 
 export const {
-  fetchInstructorLectures,
-  fetchInstructorLecturesSuccess,
-  fetchInstructorLecturesFailure,
-  createInstructorLecture,
-  createInstructorLectureSuccess,
-  createInstructorLectureFailure,
+  fetchInstructorsStart,
+  fetchInstructorsSuccess,
+  fetchInstructorsFailure,
+  createInstructorStart,
+  createInstructorSuccess,
+  createInstructorFailure,
+  updateInstructorStart,
+  updateInstructorSuccess,
+  updateInstructorFailure,
+  deleteInstructorStart,
+  deleteInstructorSuccess,
+  deleteInstructorFailure,
 } = instructorSlice.actions;
 
 export default instructorSlice.reducer;
