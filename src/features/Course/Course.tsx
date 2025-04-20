@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import './Course.css';
+import AddCourseModal from './AddCourseModal';
 
-const Course = () => {
+const Course: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openAddCourseModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeAddCourseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const [courses, setCourses] = useState([
     {
       id: 1,
@@ -30,6 +41,12 @@ const Course = () => {
     },
   ]);
 
+  // Action handling logic for edit or delete
+  const handleActionClick = (courseId: number) => {
+    console.log(`Action clicked for course with ID: ${courseId}`);
+    // Implement logic for editing or deleting a course here
+  };
+
   return (
     <Layout>
       <div className="course-container">
@@ -37,13 +54,13 @@ const Course = () => {
           <label>Filters</label>
           <select>
             <option>Course</option>
-            {/* Add options here */}
+            {/* Add more filtering options here */}
           </select>
         </div>
 
         <div className="course-header">
-          <h2>Course</h2>
-          <button className="add-course">Add Course</button>
+          <h2>Courses</h2>
+          <button className="add-course" onClick={openAddCourseModal}>Add Course</button>
         </div>
 
         <table className="course-table">
@@ -64,12 +81,18 @@ const Course = () => {
                 <td>{course.level}</td>
                 <td>{course.description}</td>
                 <td>
-                  <button className="action-btn">•••</button>
+                  <button 
+                    className="action-btn" 
+                    onClick={() => handleActionClick(course.id)}>
+                    •••
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {isModalOpen && <AddCourseModal onClose={closeAddCourseModal} />}
       </div>
     </Layout>
   );
