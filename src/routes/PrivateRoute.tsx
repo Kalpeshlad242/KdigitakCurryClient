@@ -10,14 +10,20 @@ interface PrivateRouteProps {
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
   const { isAuthenticated, user } = useAuth();
 
-  if (!isAuthenticated) {
+  // 1. If not logged in, send to login
+  if (!isAuthenticated || !user) {
     return <Navigate to="/login" />;
   }
 
-  if (!roles.includes(user?.role)) {
+  // 2. Now that TS knows `user` exists, grab the role
+  const role = user.role;
+
+  // 3. If the role isn't in our allowed list, send to /unauthorized
+  if (!roles.includes(role)) {
     return <Navigate to="/unauthorized" />;
   }
 
+  // 4. Otherwise render the protected page
   return <>{children}</>;
 };
 
