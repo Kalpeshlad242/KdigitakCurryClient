@@ -1,3 +1,4 @@
+// src/routes/PrivateRoute.tsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../features/Login/useAuth';
@@ -7,23 +8,20 @@ interface PrivateRouteProps {
   roles: string[];
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
+const PrivateRoute = ({ children, roles }: PrivateRouteProps) => {
   const { isAuthenticated, user } = useAuth();
 
-  // 1. If not logged in, send to login
-  if (!isAuthenticated || !user) {
-    return <Navigate to="/login" />;
+  // If the user is not authenticated or the user does not have the required role
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
-  // 2. Now that TS knows `user` exists, grab the role
-  const role = user.role;
-
-  // 3. If the role isn't in our allowed list, send to /unauthorized
-  if (!roles.includes(role)) {
-    return <Navigate to="/unauthorized" />;
+  if (user && !roles.includes(user.role)) {
+    // If the user does not have the required role
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  // 4. Otherwise render the protected page
+  // If authenticated and has the right role, render the children
   return <>{children}</>;
 };
 

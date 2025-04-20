@@ -1,30 +1,25 @@
-// src/features/Login/slice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface AuthState {
-  token: string | null;
-  isAuthenticated: boolean;
-  error: string | null;
-  loading: boolean;
-}
+import { AuthState, LoginPayload, LoginSuccessPayload } from './type';
 
 const initialState: AuthState = {
-  token: null,
   isAuthenticated: false,
-  error: null,
+  token: null,
+  user: null,
   loading: false,
+  error: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ username: string; password: string }>) => {
+    login: (state, _action: PayloadAction<LoginPayload>) => {
       state.loading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<{ token: string }>) => {
+    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
       state.token = action.payload.token;
+      state.user = action.payload.user;
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
@@ -33,8 +28,13 @@ const authSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    logout: (state) => {
+      state.token = null;
+      state.user = null;
+      state.isAuthenticated = false;
+    },
   },
 });
 
-export const { login, loginSuccess, loginFailure } = authSlice.actions;
+export const { login, loginSuccess, loginFailure, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../features/Login/useAuth';
 
@@ -8,8 +8,18 @@ interface PublicRouteProps {
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(true);
 
-  // Redirect to the dashboard if the user is already authenticated
+  useEffect(() => {
+    if (isAuthenticated !== undefined) {
+      setLoading(false); // Once authentication check is complete, stop loading
+    }
+  }, [isAuthenticated]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator while checking auth
+  }
+
   if (isAuthenticated) {
     return <Navigate to="/dashboard" />;
   }

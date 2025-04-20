@@ -5,61 +5,46 @@ interface User {
   role: string;
 }
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  user: User | null;
-  token: string | null;
-  loginUser: (username: string, password: string) => Promise<void>;
-  logoutUser: () => void;
-}
-
-const useAuth = (): AuthContextType => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(null);
+const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const storedUser = localStorage.getItem('user');
     
     if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(storedUser);
       setIsAuthenticated(true);
+      setUser(JSON.parse(storedUser));
+    } else {
+      setIsAuthenticated(false); // Ensure false when no token or user is found
     }
   }, []);
 
-  const loginUser = async (username: string, password: string) => {
-    // Here, you'd typically make an API request for authentication
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-    });
+  const loginUser = (username: string, password: string) => {
+    // Simulate login here (for now)
+    const token = 'fake-jwt-token';
+    const user = { username, role: 'admin' };
 
-    const data = await response.json();
-    if (data.token && data.user) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setToken(data.token);
-      setUser(data.user);
-      setIsAuthenticated(true);
-    }
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    setIsAuthenticated(true);
+    setUser(user);
   };
 
   const logoutUser = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setToken(null);
-    setUser(null);
     setIsAuthenticated(false);
+    setUser(null);
   };
 
   return {
     isAuthenticated,
     user,
-    token,
     loginUser,
-    logoutUser,
+    logoutUser
   };
 };
 
