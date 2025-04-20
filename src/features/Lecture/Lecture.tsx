@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import './Lecture.css';
+import AddLecture from './AddLecturer'; // Import AddLecture Modal
 
 const Lecture = () => {
   const [lectures, setLectures] = useState([
@@ -18,7 +19,7 @@ const Lecture = () => {
       courseName: 'Data Structures',
       date: '06/03/2025',
       time: '12:00 pm to 01:30 pm',
-      duration: '1 Hours 30 Minutes',
+      duration: '1 Hour 30 Minutes',
     },
     {
       id: 3,
@@ -26,7 +27,7 @@ const Lecture = () => {
       courseName: 'Algorithms',
       date: '07/03/2025',
       time: '10:00 am to 11:30 am',
-      duration: '1 Hours 30 Minutes',
+      duration: '1 Hour 30 Minutes',
     },
     {
       id: 4,
@@ -38,20 +39,38 @@ const Lecture = () => {
     },
   ]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
+  const [filter, setFilter] = useState(''); // Filter state for lecture search
+
+  const openAddLectureModal = () => {
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const closeAddLectureModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(e.target.value); // Update filter state
+  };
+
   return (
     <Layout>
       <div className="lecture-container">
         <div className="filter-bar">
-          <label>Filters</label>
-          <select>
-            <option>Lecture</option>
-            {/* Add more filters if needed */}
+          <label>Filter by Course</label>
+          <select value={filter} onChange={handleFilterChange}>
+            <option value="">All Courses</option>
+            <option value="Introduction to Programming">Introduction to Programming</option>
+            <option value="Data Structures">Data Structures</option>
+            <option value="Algorithms">Algorithms</option>
+            <option value="Web Development">Web Development</option>
           </select>
         </div>
 
         <div className="lecture-header">
           <h2>Lecture</h2>
-          <button className="add-lecture">Add Lecture</button>
+          <button className="add-lecture" onClick={openAddLectureModal}>Add Lecture</button>
         </div>
 
         <table className="lecture-table">
@@ -67,22 +86,27 @@ const Lecture = () => {
             </tr>
           </thead>
           <tbody>
-            {lectures.map((lecture, index) => (
-              <tr key={lecture.id}>
-                <td>{index + 1}</td>
-                <td>{lecture.instructorName}</td>
-                <td>{lecture.courseName}</td>
-                <td>{lecture.date}</td>
-                <td>{lecture.time}</td>
-                <td>{lecture.duration}</td>
-                <td>
-                  <button className="action-btn">•••</button>
-                </td>
-              </tr>
-            ))}
+            {lectures
+              .filter((lecture) => (filter ? lecture.courseName === filter : true)) // Apply filter
+              .map((lecture, index) => (
+                <tr key={lecture.id}>
+                  <td>{index + 1}</td>
+                  <td>{lecture.instructorName}</td>
+                  <td>{lecture.courseName}</td>
+                  <td>{lecture.date}</td>
+                  <td>{lecture.time}</td>
+                  <td>{lecture.duration}</td>
+                  <td>
+                    <button className="action-btn" onClick={() => alert('Editing ' + lecture.courseName)}>Edit</button>
+                    <button className="action-btn" onClick={() => alert('Deleting ' + lecture.courseName)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
+
+      {isModalOpen && <AddLecture onClose={closeAddLectureModal} />} {/* Modal Component */}
     </Layout>
   );
 };
