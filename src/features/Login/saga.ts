@@ -1,25 +1,27 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { loginRequest, loginSuccess, loginFailure } from './slice';
+import { login, loginSuccess, loginFailure } from './slice';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginPayload } from './type';
 
-// Use environment variable for API base URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-function loginApi(payload: LoginPayload) {
-  return axios.post(`${API_BASE_URL}/login`, payload);
+interface LoginApiResponse {
+  token: string;
 }
 
-function* handleLogin(action: PayloadAction<LoginPayload>): Generator<any, void, any> {
+function loginApi(credentials: { username: string; password: string }): Promise<LoginApiResponse> {
+  return axios.post('/api/login', credentials).then(response => response.data);
+}
+
+function* handleLogin(action: PayloadAction<{ username: string; password: string }>): Generator<any, void, any> {
   try {
-    const response = yield call(loginApi, action.payload);
-    yield put(loginSuccess({ token: response.data.token }));
+    const fakeToken = 'fake-jwt-token'; // Simulated token
+   // const response: LoginApiResponse = yield call(loginApi, action.payload);
+    yield put(loginSuccess({ token: fakeToken }));
+    // yield put(loginSuccess({ token: response.token }));
   } catch (error: any) {
     yield put(loginFailure(error.response?.data?.message || 'Login failed'));
   }
 }
 
 export default function* authSaga() {
-  yield takeLatest(loginRequest.type, handleLogin);
+  yield takeLatest(login.type, handleLogin);
 }

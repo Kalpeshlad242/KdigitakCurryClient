@@ -1,42 +1,40 @@
-// src/features/auth/authSlice.ts
+// src/features/Login/slice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginSuccessPayload } from './type';
+
+interface AuthState {
+  token: string | null;
+  isAuthenticated: boolean;
+  error: string | null;
+  loading: boolean;
+}
 
 const initialState: AuthState = {
-  isAuthenticated: false,
   token: null,
-  loading: false,
+  isAuthenticated: false,
   error: null,
+  loading: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
     login: (state, action: PayloadAction<{ username: string; password: string }>) => {
-      // This can trigger login request actions or any additional logic
       state.loading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
-      state.loading = false;
-      state.isAuthenticated = true;
+    loginSuccess: (state, action: PayloadAction<{ token: string }>) => {
       state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
       state.error = action.payload;
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.token = null;
+      state.loading = false;
     },
   },
 });
 
-export const { loginRequest,login, loginSuccess, loginFailure, logout } = authSlice.actions;
+export const { login, loginSuccess, loginFailure } = authSlice.actions;
 export default authSlice.reducer;

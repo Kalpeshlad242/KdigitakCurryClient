@@ -1,17 +1,30 @@
-// src/hooks/LoginPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { login } from './slice';
-import { selectAuthError, selectAuthLoading } from './selector';
+import { selectAuthError, selectAuthLoading, selectIsAuthenticated } from './selector';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  // Select Redux state
   const error = useSelector(selectAuthError);
   const loading = useSelector(selectAuthLoading);
+  const isAuthenticated = useSelector(selectIsAuthenticated); // New selector to check login status
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // Redirect to Dashboard if logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Handle form submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(login({ username, password }));
@@ -34,7 +47,7 @@ const LoginPage = () => {
         <Typography variant="h5" component="h1" gutterBottom>
           Login
         </Typography>
-        {error && <Typography color="error">{error}</Typography>}
+        {error && <Typography color="error">{error}</Typography>} {/* Error message */}
         <form onSubmit={handleSubmit} noValidate>
           <TextField
             variant="outlined"
