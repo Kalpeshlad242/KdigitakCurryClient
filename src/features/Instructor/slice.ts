@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { InstructorLecture } from "./type";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { InstructorLecture } from './type';
 
 interface InstructorState {
   lectures: InstructorLecture[];
@@ -14,7 +14,7 @@ const initialState: InstructorState = {
 };
 
 const instructorSlice = createSlice({
-  name: "instructor",
+  name: 'instructor',
   initialState,
   reducers: {
     fetchInstructorLectures: (state) => {
@@ -28,6 +28,17 @@ const instructorSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    createInstructorLecture: (state, action: PayloadAction<InstructorLecture>) => {
+      state.loading = true;
+    },
+    createInstructorLectureSuccess: (state, action: PayloadAction<InstructorLecture>) => {
+      state.loading = false;
+      state.lectures.push(action.payload); // Add new lecture to the list
+    },
+    createInstructorLectureFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -35,6 +46,9 @@ export const {
   fetchInstructorLectures,
   fetchInstructorLecturesSuccess,
   fetchInstructorLecturesFailure,
+  createInstructorLecture,
+  createInstructorLectureSuccess,
+  createInstructorLectureFailure,
 } = instructorSlice.actions;
 
 export default instructorSlice.reducer;

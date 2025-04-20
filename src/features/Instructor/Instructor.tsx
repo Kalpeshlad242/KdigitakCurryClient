@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchInstructorLectures } from "./slice";
 import { selectInstructorLectures } from "./selector";
 import { InstructorLecture } from "./type";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Instructor = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ const Instructor = () => {
 ))}
 
       </ul>
+      <ToastContainer />
+
     </div>
   );
 };
