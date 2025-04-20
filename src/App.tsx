@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import useAuth from './features/Login/useAuth';
-import LoginPage from './features/Login/Login';
-import SignUpPage from './features/Signup/SignUpPage';
-import Dashboard from './features/Dashboard/Dashboard'; // Corrected import path for Dashboard
+import LoginPage from './features/Login/Index';
+import SignUpPage from './features/Signup/index';
+import Dashboard from './features/Home/Index';
+ // Corrected import path for Dashboard
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 
