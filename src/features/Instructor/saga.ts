@@ -17,10 +17,14 @@ import {
 } from "./slice";
 import { Instructor } from "./type";
 
+// Base URL from environment
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API = `${API_BASE_URL}/instructors`;
+
 // Fetch all instructors
 function* handleFetchInstructors() {
   try {
-    const response: AxiosResponse<Instructor[]> = yield call(axios.get, "/api/instructors");
+    const response: AxiosResponse<Instructor[]> = yield call(axios.get, API);
     yield put(fetchInstructorsSuccess(response.data));
   } catch (error: any) {
     yield put(fetchInstructorsFailure(error.message));
@@ -30,7 +34,11 @@ function* handleFetchInstructors() {
 // Create instructor
 function* handleCreateInstructor(action: ReturnType<typeof createInstructorStart>) {
   try {
-    const response: AxiosResponse<Instructor> = yield call(axios.post, "/api/instructors", action.payload);
+    const response: AxiosResponse<Instructor> = yield call(
+      axios.post,
+      API,
+      action.payload
+    );
     yield put(createInstructorSuccess(response.data));
   } catch (error: any) {
     yield put(createInstructorFailure(error.message));
@@ -40,7 +48,12 @@ function* handleCreateInstructor(action: ReturnType<typeof createInstructorStart
 // Update instructor
 function* handleUpdateInstructor(action: ReturnType<typeof updateInstructorStart>) {
   try {
-    const response: AxiosResponse<Instructor> = yield call(axios.put, `/api/instructors/${action.payload.id}`, action.payload);
+    const { id, ...body } = action.payload;
+    const response: AxiosResponse<Instructor> = yield call(
+      axios.put,
+      `${API}/${id}`,
+      body
+    );
     yield put(updateInstructorSuccess(response.data));
   } catch (error: any) {
     yield put(updateInstructorFailure(error.message));
@@ -50,7 +63,7 @@ function* handleUpdateInstructor(action: ReturnType<typeof updateInstructorStart
 // Delete instructor
 function* handleDeleteInstructor(action: ReturnType<typeof deleteInstructorStart>) {
   try {
-    yield call(axios.delete, `/api/instructors/${action.payload}`);
+    yield call(axios.delete, `${API}/${action.payload}`);
     yield put(deleteInstructorSuccess(action.payload));
   } catch (error: any) {
     yield put(deleteInstructorFailure(error.message));

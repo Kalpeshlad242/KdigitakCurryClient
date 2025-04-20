@@ -27,10 +27,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "start:staging": "env-cmd -f .env.staging react-scripts start"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "ajv": "^8.11.0",
-    "ajv-keywords": "^5.1.0"
+    "ajv-keywords": "^5.1.0",
+    "env-cmd": "^10.1.0"
   }
 }

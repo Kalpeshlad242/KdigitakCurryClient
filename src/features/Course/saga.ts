@@ -16,10 +16,14 @@ import {
 } from "./slice";
 import { Course } from "./type";
 
+// Base URL from .env
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const ENDPOINT = `${API_BASE}/courses`;
+
 // Fetch all
 function* handleFetchCourses() {
   try {
-    const resp: AxiosResponse<Course[]> = yield call(axios.get, "/api/courses");
+    const resp: AxiosResponse<Course[]> = yield call(axios.get, ENDPOINT);
     yield put(fetchCoursesSuccess(resp.data));
   } catch (err: any) {
     yield put(fetchCoursesFailure(err.message));
@@ -31,7 +35,7 @@ function* handleCreateCourse(action: ReturnType<typeof createCourseStart>) {
   try {
     const resp: AxiosResponse<Course> = yield call(
       axios.post,
-      "/api/courses",
+      ENDPOINT,
       action.payload
     );
     yield put(createCourseSuccess(resp.data));
@@ -46,7 +50,7 @@ function* handleUpdateCourse(action: ReturnType<typeof updateCourseStart>) {
     const { id, ...body } = action.payload;
     const resp: AxiosResponse<Course> = yield call(
       axios.put,
-      `/api/courses/${id}`,
+      `${ENDPOINT}/${id}`,
       body
     );
     yield put(updateCourseSuccess(resp.data));
@@ -58,7 +62,7 @@ function* handleUpdateCourse(action: ReturnType<typeof updateCourseStart>) {
 // Delete
 function* handleDeleteCourse(action: ReturnType<typeof deleteCourseStart>) {
   try {
-    yield call(axios.delete, `/api/courses/${action.payload}`);
+    yield call(axios.delete, `${ENDPOINT}/${action.payload}`);
     yield put(deleteCourseSuccess(action.payload));
   } catch (err: any) {
     yield put(deleteCourseFailure(err.message));

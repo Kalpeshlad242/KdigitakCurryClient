@@ -8,11 +8,15 @@ import {
 } from './slice';
 import { DashboardStats } from './type';
 
+// Use environment variable for API base URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API = `${API_BASE_URL}/dashboard/stats`;
+
 function* handleFetchDashboardStats() {
   try {
     const response: AxiosResponse<DashboardStats> = yield call(
       axios.get,
-      '/api/dashboard/stats'
+      API
     );
     yield put(fetchDashboardStatsSuccess(response.data));
   } catch (err: any) {

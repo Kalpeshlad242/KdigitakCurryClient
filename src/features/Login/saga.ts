@@ -1,12 +1,14 @@
-// src/hooks/authSaga.ts
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import { loginRequest, loginSuccess, loginFailure } from './slice';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { LoginPayload } from './type';
 
+// Use environment variable for API base URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function loginApi(payload: LoginPayload) {
-  return axios.post('http://localhost:5000/login', payload);
+  return axios.post(`${API_BASE_URL}/login`, payload);
 }
 
 function* handleLogin(action: PayloadAction<LoginPayload>): Generator<any, void, any> {

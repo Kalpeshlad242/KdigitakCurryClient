@@ -13,7 +13,9 @@ import {
 } from './slice';
 import { Lecture } from './type';
 
-const API = 'http://localhost:5000/api/lectures';
+// Use environment variable for API base URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API = `${API_BASE_URL}/api/lectures`;
 
 function* fetchLecturesSaga() {
   try {
