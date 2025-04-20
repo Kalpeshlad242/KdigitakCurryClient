@@ -1,6 +1,6 @@
 // src/features/auth/authSelectors.ts
 import { RootState } from '../../app/store';
-export const selectAuthState = (state: RootState) => state.auth;
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
-export const selectAuthError = (state: RootState) => state.auth.error;
-export const selectAuthLoading = (state: RootState) => state.auth.loading;
+
+export const selectCourses = (state: RootState) => state.course.courses;
+export const selectCourseLoading = (state: RootState) => state.course.loading;
+export const selectCourseError = (state: RootState) => state.course.error;

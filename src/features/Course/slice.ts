@@ -1,42 +1,35 @@
-// src/features/auth/authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginSuccessPayload } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Course, CourseState } from "./type";
 
-const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
+const initialState: CourseState = {
+  courses: [],
   loading: false,
   error: null,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const courseSlice = createSlice({
+  name: "course",
   initialState,
   reducers: {
-    loginRequest: (state) => {
+    fetchCoursesStart(state) {
       state.loading = true;
       state.error = null;
     },
-    login: (state, action: PayloadAction<{ username: string; password: string }>) => {
-      // This can trigger login request actions or any additional logic
-      state.loading = true;
-      state.error = null;
-    },
-    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
+    fetchCoursesSuccess(state, action: PayloadAction<Course[]>) {
       state.loading = false;
-      state.isAuthenticated = true;
-      state.token = action.payload.token;
+      state.courses = action.payload;
     },
-    loginFailure: (state, action: PayloadAction<string>) => {
+    fetchCoursesFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.token = null;
     },
   },
 });
 
-export const { loginRequest,login, loginSuccess, loginFailure, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  fetchCoursesStart,
+  fetchCoursesSuccess,
+  fetchCoursesFailure,
+} = courseSlice.actions;
+
+export default courseSlice.reducer;

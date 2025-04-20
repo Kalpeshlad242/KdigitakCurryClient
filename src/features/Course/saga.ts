@@ -1,23 +1,22 @@
-// src/hooks/authSaga.ts
-import { call, put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
-import { loginRequest, loginSuccess, loginFailure } from './slice';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginPayload } from './type';
+import { call, put, takeLatest } from "redux-saga/effects";
+import axios from "axios";
+import {
+  fetchCoursesStart,
+  fetchCoursesSuccess,
+  fetchCoursesFailure,
+} from "./slice";
+import { Course } from "./type";
+import { SagaIterator } from "redux-saga";
 
-function loginApi(payload: LoginPayload) {
-  return axios.post('http://localhost:5000/login', payload);
-}
-
-function* handleLogin(action: PayloadAction<LoginPayload>): Generator<any, void, any> {
+function* handleFetchCourses(): SagaIterator {
   try {
-    const response = yield call(loginApi, action.payload);
-    yield put(loginSuccess({ token: response.data.token }));
+    const response: { data: Course[] } = yield call(axios.get, "/api/courses");
+    yield put(fetchCoursesSuccess(response.data));
   } catch (error: any) {
-    yield put(loginFailure(error.response?.data?.message || 'Login failed'));
+    yield put(fetchCoursesFailure(error.message));
   }
 }
 
-export default function* authSaga() {
-  yield takeLatest(loginRequest.type, handleLogin);
+export function* courseSaga(): SagaIterator {
+  yield takeLatest(fetchCoursesStart.type, handleFetchCourses);
 }
