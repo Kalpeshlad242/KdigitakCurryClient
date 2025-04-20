@@ -1,0 +1,68 @@
+.lecture-container {
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .filter-bar {
+    margin-bottom: 16px;
+  }
+  
+  .filter-bar select {
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .lecture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .add-lecture {
+    background-color: #0052cc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .add-lecture:hover {
+    background-color: #0041a8;
+  }
+  
+  .lecture-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .lecture-table thead {
+    background-color: #0052cc;
+    color: white;
+    text-align: left;
+  }
+  
+  .lecture-table th,
+  .lecture-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .lecture-table tr:hover {
+    background-color: #f1f5ff;
+  }
+  
+  .action-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  

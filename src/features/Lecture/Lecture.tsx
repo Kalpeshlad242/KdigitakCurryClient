@@ -1,67 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchLecturesStart,
-  createLectureStart,
-  deleteLectureStart,
-} from './slice';
-import { selectLectures } from './selector';
+import React, { useState } from 'react';
 import Layout from '../../components/Layout';
+import './Lecture.css';
+
 const Lecture = () => {
-  const dispatch = useDispatch();
-  const lectures = useSelector(selectLectures);
-
-  const [form, setForm] = useState({
-    topic: '',
-    instructorId: '',
-    date: '',
-    time: '',
-  });
-
-  useEffect(() => {
-    dispatch(fetchLecturesStart());
-  }, [dispatch]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(createLectureStart(form));
-    setForm({ topic: '', instructorId: '', date: '', time: '' });
-  };
-
-  const handleDelete = (id: string) => {
-    dispatch(deleteLectureStart(id));
-  };
+  const [lectures, setLectures] = useState([
+    {
+      id: 1,
+      instructorName: 'John Doe',
+      courseName: 'Introduction to Programming',
+      date: '04/03/2025',
+      time: '06:00 pm to 08:00 pm',
+      duration: '2 Hours',
+    },
+    {
+      id: 2,
+      instructorName: 'Jane Smith',
+      courseName: 'Data Structures',
+      date: '06/03/2025',
+      time: '12:00 pm to 01:30 pm',
+      duration: '1 Hours 30 Minutes',
+    },
+    {
+      id: 3,
+      instructorName: 'Mark Johnson',
+      courseName: 'Algorithms',
+      date: '07/03/2025',
+      time: '10:00 am to 11:30 am',
+      duration: '1 Hours 30 Minutes',
+    },
+    {
+      id: 4,
+      instructorName: 'Emily White',
+      courseName: 'Web Development',
+      date: '08/03/2025',
+      time: '04:00 pm to 06:30 pm',
+      duration: '2 Hours 30 Minutes',
+    },
+  ]);
 
   return (
     <Layout>
-    <div className="p-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Lecture Management</h2>
-      <form onSubmit={handleSubmit} className="mb-6 space-y-4 bg-gray-100 p-4 rounded">
-        <input className="w-full p-2 border rounded" name="topic" value={form.topic} onChange={handleChange} placeholder="Topic" required />
-        <input className="w-full p-2 border rounded" name="instructorId" value={form.instructorId} onChange={handleChange} placeholder="Instructor ID" required />
-        <input className="w-full p-2 border rounded" name="date" type="date" value={form.date} onChange={handleChange} required />
-        <input className="w-full p-2 border rounded" name="time" type="time" value={form.time} onChange={handleChange} required />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded" type="submit">Create Lecture</button>
-      </form>
+      <div className="lecture-container">
+        <div className="filter-bar">
+          <label>Filters</label>
+          <select>
+            <option>Lecture</option>
+            {/* Add more filters if needed */}
+          </select>
+        </div>
 
-      <ul className="space-y-3">
-        {lectures.map((lecture) => (
-          <li key={lecture.id} className="bg-white shadow p-4 rounded flex justify-between items-center">
-            <div>
-              <div><strong>Topic:</strong> {lecture.topic}</div>
-              <div><strong>Instructor ID:</strong> {lecture.instructorId}</div>
-              <div><strong>Date:</strong> {lecture.date}</div>
-              <div><strong>Time:</strong> {lecture.time}</div>
-            </div>
-            <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDelete(lecture.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+        <div className="lecture-header">
+          <h2>Lecture</h2>
+          <button className="add-lecture">Add Lecture</button>
+        </div>
+
+        <table className="lecture-table">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Instructor Name</th>
+              <th>Course Name</th>
+              <th>Lecture Date</th>
+              <th>Lecture Time</th>
+              <th>Duration</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lectures.map((lecture, index) => (
+              <tr key={lecture.id}>
+                <td>{index + 1}</td>
+                <td>{lecture.instructorName}</td>
+                <td>{lecture.courseName}</td>
+                <td>{lecture.date}</td>
+                <td>{lecture.time}</td>
+                <td>{lecture.duration}</td>
+                <td>
+                  <button className="action-btn">•••</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Layout>
   );
 };
