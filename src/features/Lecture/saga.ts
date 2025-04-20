@@ -1,22 +1,49 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import axios from "axios";
+import { call, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 import {
   fetchLecturesStart,
   fetchLecturesSuccess,
   fetchLecturesFailure,
-} from "./slice";
-import { Lecture } from "./type";
-import { AxiosResponse } from "axios";
+  createLectureStart,
+  createLectureSuccess,
+  createLectureFailure,
+  deleteLectureStart,
+  deleteLectureSuccess,
+  deleteLectureFailure,
+} from './slice';
+import { Lecture } from './type';
 
-function* handleFetchLectures(): Generator<any, void, AxiosResponse<Lecture[]>> {
+const API = 'http://localhost:5000/api/lectures';
+
+function* fetchLecturesSaga() {
   try {
-    const response = yield call(axios.get, "/api/lectures");
-    yield put(fetchLecturesSuccess(response.data));
+    const { data } = yield call(axios.get, API);
+    yield put(fetchLecturesSuccess(data));
   } catch (error: any) {
     yield put(fetchLecturesFailure(error.message));
   }
 }
 
+function* createLectureSaga(action: { type: string; payload: Omit<Lecture, 'id'> }) {
+  try {
+    const { data } = yield call(axios.post, API, action.payload);
+    yield put(createLectureSuccess(data));
+  } catch (error: any) {
+    yield put(createLectureFailure(error.message));
+  }
+}
+
+function* deleteLectureSaga(action: { type: string; payload: string }) {
+  try {
+    yield call(axios.delete, `${API}/${action.payload}`);
+    yield put(deleteLectureSuccess(action.payload));
+  } catch (error: any) {
+    yield put(deleteLectureFailure(error.message));
+  }
+}
+
 export function* lectureSaga() {
-  yield takeLatest(fetchLecturesStart.type, handleFetchLectures);
+  yield takeLatest(fetchLecturesStart.type, fetchLecturesSaga);
+  yield takeLatest(createLectureStart.type, createLectureSaga);
+  yield takeLatest(deleteLectureStart.type, deleteLectureSaga);
 }
