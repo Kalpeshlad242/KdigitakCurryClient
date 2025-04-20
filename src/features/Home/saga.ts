@@ -1,23 +1,22 @@
-// src/hooks/authSaga.ts
-import { call, put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
-import { loginRequest, loginSuccess, loginFailure } from './slice';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginPayload } from './type';
+import { call, put, takeLatest } from "redux-saga/effects";
+import axios from "axios";
+import {
+  fetchDashboardStatsStart,
+  fetchDashboardStatsSuccess,
+  fetchDashboardStatsFailure,
+} from "./slice";
+import { DashboardStats } from "./type";
+import { AxiosResponse } from "axios";
 
-function loginApi(payload: LoginPayload) {
-  return axios.post('http://localhost:5000/login', payload);
-}
-
-function* handleLogin(action: PayloadAction<LoginPayload>): Generator<any, void, any> {
+function* handleFetchDashboardStats(): Generator<any, void, AxiosResponse<DashboardStats>> {
   try {
-    const response = yield call(loginApi, action.payload);
-    yield put(loginSuccess({ token: response.data.token }));
+    const response = yield call(axios.get, "/api/dashboard/stats");
+    yield put(fetchDashboardStatsSuccess(response.data));
   } catch (error: any) {
-    yield put(loginFailure(error.response?.data?.message || 'Login failed'));
+    yield put(fetchDashboardStatsFailure(error.message));
   }
 }
 
-export default function* authSaga() {
-  yield takeLatest(loginRequest.type, handleLogin);
+export function* dashboardSaga() {
+  yield takeLatest(fetchDashboardStatsStart.type, handleFetchDashboardStats);
 }

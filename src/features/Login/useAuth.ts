@@ -1,27 +1,66 @@
-// src/hooks/useAuth.tsx
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store'; // Adjust path if necessary
-import { loginRequest, logout } from './slice'; // Adjust path if necessary
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-const useAuth = () => {
-  const dispatch = useDispatch();
-  const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
+interface User {
+  username: string;
+  role: string;
+}
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  user: User | null;
+  token: string | null;
+  loginUser: (username: string, password: string) => Promise<void>;
+  logoutUser: () => void;
+}
+
+const useAuth = (): AuthContextType => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(storedUser);
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const loginUser = async (username: string, password: string) => {
-    try {
-      const response = await axios.post('http://localhost:5000/login', { username, password });
-      dispatch(loginRequest(response.data.token)); // Ensure your login action sets `token` and `isAuthenticated`
-    } catch (error) {
-      console.error('Login failed:', error);
+    // Here, you'd typically make an API request for authentication
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+    if (data.token && data.user) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setToken(data.token);
+      setUser(data.user);
+      setIsAuthenticated(true);
     }
   };
 
   const logoutUser = () => {
-    dispatch(logout());
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
+    setUser(null);
+    setIsAuthenticated(false);
   };
 
-  return { isAuthenticated, token, loginUser, logoutUser };
+  return {
+    isAuthenticated,
+    user,
+    token,
+    loginUser,
+    logoutUser,
+  };
 };
 
 export default useAuth;

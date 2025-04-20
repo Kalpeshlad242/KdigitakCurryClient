@@ -1,42 +1,41 @@
-// src/features/auth/authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginSuccessPayload } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { DashboardStats } from "./type";
 
-const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
+interface DashboardState {
+  stats: DashboardStats | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: DashboardState = {
+  stats: null,
   loading: false,
   error: null,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const dashboardSlice = createSlice({
+  name: "dashboard",
   initialState,
   reducers: {
-    loginRequest: (state) => {
+    fetchDashboardStatsStart(state) {
       state.loading = true;
       state.error = null;
     },
-    login: (state, action: PayloadAction<{ username: string; password: string }>) => {
-      // This can trigger login request actions or any additional logic
-      state.loading = true;
-      state.error = null;
-    },
-    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
+    fetchDashboardStatsSuccess(state, action: PayloadAction<DashboardStats>) {
       state.loading = false;
-      state.isAuthenticated = true;
-      state.token = action.payload.token;
+      state.stats = action.payload;
     },
-    loginFailure: (state, action: PayloadAction<string>) => {
+    fetchDashboardStatsFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.token = null;
     },
   },
 });
 
-export const { loginRequest,login, loginSuccess, loginFailure, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  fetchDashboardStatsStart,
+  fetchDashboardStatsSuccess,
+  fetchDashboardStatsFailure,
+} = dashboardSlice.actions;
+
+export default dashboardSlice.reducer;

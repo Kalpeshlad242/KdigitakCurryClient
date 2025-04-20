@@ -1,31 +1,64 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import useAuth from './features/Login/useAuth';
 import LoginPage from './features/Login/index';
 import SignUpPage from './features/Signup/index';
-import Dashboard from './features/Home/index';
- // Corrected import path for Dashboard
+import Dashboard from "./features/Home/Dashboard";
+import Course from "./features/Course/Course";
+import Lecture from "./features/Lecture/Lecture";
+
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 
 function App() {
-  const { isAuthenticated } = useAuth();
-
   return (
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/login" element={<PublicRoute component={LoginPage} 
-        isAuthenticated={isAuthenticated} />} />
-        <Route path="/signup" element={<PublicRoute component={SignUpPage} isAuthenticated={isAuthenticated} />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <SignUpPage />
+            </PublicRoute>
+          }
+        />
 
-        {/* Private Routes */}
-        <Route path="/dashboard" element={<PrivateRoute component={Dashboard} 
-        isAuthenticated={isAuthenticated} />} />
-        {/* Add more private routes here */}
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute roles={["admin", "instructor"]}>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/courses"
+          element={
+            <PrivateRoute roles={["admin"]}>
+              <Course />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/lectures"
+          element={
+            <PrivateRoute roles={["instructor"]}>
+              <Lecture />
+            </PrivateRoute>
+          }
+        />
 
-        {/* Redirect to login if no match */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* Default Redirect */}
+        <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </Router>
   );

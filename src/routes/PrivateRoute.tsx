@@ -1,13 +1,24 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import useAuth from '../features/Login/useAuth';
 
 interface PrivateRouteProps {
-  component: React.ComponentType<any>;
-  isAuthenticated: boolean;
+  children: React.ReactNode;
+  roles: string[];
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, isAuthenticated }) => {
-  return isAuthenticated ? <Component /> : <Navigate to="/login" />;
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
+  const { isAuthenticated, user } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!roles.includes(user?.role)) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return <>{children}</>;
 };
 
 export default PrivateRoute;
