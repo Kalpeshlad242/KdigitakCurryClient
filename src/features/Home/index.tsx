@@ -1,6 +1,6 @@
 // src/features/Home/index.tsx
-export { default as Dashboard } from './components/Dashboard';
-export * from './dashboardSlice';
-export * from './dashboardSelectors';
-export * from './dashboardTypes';
-export { dashboardSaga } from './dashboardSaga';
+export { default as Dashboard } from './Dashboard';
+export * from './slice';
+export * from './selector';
+export * from './type';
+export { dashboardSaga } from './saga';
