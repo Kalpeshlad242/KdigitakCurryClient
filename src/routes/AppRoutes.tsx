@@ -9,6 +9,7 @@ import SignUpPage from '../features/Signup';
 import Dashboard from '../features/Home/Dashboard';
 import Lecture from '../features/Lecture/Lecture';
 import Unauthorized from '../features/Unauthorized/Unauthorized';
+import { Instructor } from '../features/Instructor';
 
 const AppRoutes = () => {
   return (
@@ -27,7 +28,7 @@ const AppRoutes = () => {
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={['admin']}>
             <Dashboard />
           </PrivateRoute>
         }
@@ -36,7 +37,7 @@ const AppRoutes = () => {
       <Route
         path="/courses"
         element={
-          <PrivateRoute roles={['admin']}>
+          <PrivateRoute roles={['admin','instructor']}>
             <Course />
           </PrivateRoute>
         }
@@ -45,8 +46,16 @@ const AppRoutes = () => {
       <Route
         path="/lectures"
         element={
-          <PrivateRoute roles={['instructor']}>
+          <PrivateRoute roles={['admin','instructor']}>
             <Lecture />
+          </PrivateRoute>
+        }
+      />
+       <Route
+        path="/instructor"
+        element={
+          <PrivateRoute roles={['admin','instructor']}>
+            <Instructor />
           </PrivateRoute>
         }
       />

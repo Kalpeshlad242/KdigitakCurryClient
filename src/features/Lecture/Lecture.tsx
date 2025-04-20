@@ -6,7 +6,7 @@ import {
   deleteLectureStart,
 } from './slice';
 import { selectLectures } from './selector';
-
+import Layout from '../../components/Layout';
 const Lecture = () => {
   const dispatch = useDispatch();
   const lectures = useSelector(selectLectures);
@@ -37,6 +37,7 @@ const Lecture = () => {
   };
 
   return (
+    <Layout>
     <div className="p-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Lecture Management</h2>
       <form onSubmit={handleSubmit} className="mb-6 space-y-4 bg-gray-100 p-4 rounded">
@@ -61,6 +62,7 @@ const Lecture = () => {
         ))}
       </ul>
     </div>
+    </Layout>
   );
 };
 

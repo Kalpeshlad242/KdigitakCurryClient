@@ -12,7 +12,7 @@ import {
   selectCourseError,
 } from "./selector";
 import { Course } from "./type";
-
+import Layout from '../../components/Layout';
 const CourseComponent: React.FC = () => {
   const dispatch = useAppDispatch();
   const courses = useAppSelector(selectCourses);
@@ -57,6 +57,7 @@ const CourseComponent: React.FC = () => {
   };
 
   return (
+    <Layout>
     <div className="p-4 space-y-6">
       <h2 className="text-2xl font-bold">{editing ? "Edit Course" : "Add Course"}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 max-w-md">
@@ -90,7 +91,7 @@ const CourseComponent: React.FC = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </div></Layout>
   );
 };
 

@@ -10,6 +10,7 @@ import {
 import { selectInstructors, selectInstructorLoading, selectInstructorError } from 
 "./selector";
 import { Instructor } from "./type";
+import Layout from '../../components/Layout';
 
 const InstructorComponent: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -44,7 +45,7 @@ const InstructorComponent: React.FC = () => {
     setForm({ name: i.name, email: i.email, lectures: i.lectures });
   };
 
-  return (
+  return (<Layout>
     <div className="p-4 space-y-6">
       <h2 className="text-2xl font-bold">{editing ? "Edit Instructor" : "Add Instructor"}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 max-w-md">
@@ -89,7 +90,7 @@ const InstructorComponent: React.FC = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </div></Layout>
   );
 };
 
