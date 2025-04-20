@@ -1,18 +1,14 @@
-// src/features/auth/authTypes.ts
+export interface Lecture {
+  id: string;
+  courseId: string;
+  instructorId: string;
+  date: string;
+  status: string;
+  courseName:string;
+}
 
-export interface AuthState {
-    isAuthenticated: boolean;
-    token: string | null;
-    loading: boolean;
-    error: string | null;
-  }
-  
-  export interface LoginPayload {
-    username: string;
-    password: string;
-  }
-  
-  export interface LoginSuccessPayload {
-    token: string;
-  }
-  
+export interface LectureState {
+  lectures: Lecture[];
+  loading: boolean;
+  error: string | null;
+}
