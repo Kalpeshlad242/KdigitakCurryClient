@@ -1,7 +1,7 @@
 // src/hooks/useAuth.tsx
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/store'; // Adjust path if necessary
-import { login, logout } from '../hooks/authSlice'; // Adjust path if necessary
+import { loginRequest, logout } from '../hooks/authSlice'; // Adjust path if necessary
 import axios from 'axios';
 
 const useAuth = () => {
@@ -11,7 +11,7 @@ const useAuth = () => {
   const loginUser = async (username: string, password: string) => {
     try {
       const response = await axios.post('http://localhost:5000/login', { username, password });
-      dispatch(login(response.data.token)); // Ensure your login action sets `token` and `isAuthenticated`
+      dispatch(loginRequest(response.data.token)); // Ensure your login action sets `token` and `isAuthenticated`
     } catch (error) {
       console.error('Login failed:', error);
     }
