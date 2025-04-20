@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import { login } from './authSlice';
-import { selectAuthError, selectAuthLoading } from './authSelectors';
+import { login } from './slice';
+import { selectAuthError, selectAuthLoading } from './selector';
 
 const LoginPage = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 // src/hooks/useAuth.tsx
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../app/store'; // Adjust path if necessary
-import { loginRequest, logout } from '../hooks/authSlice'; // Adjust path if necessary
+import { RootState } from '../../app/store'; // Adjust path if necessary
+import { loginRequest, logout } from './slice'; // Adjust path if necessary
 import axios from 'axios';
 
 const useAuth = () => {

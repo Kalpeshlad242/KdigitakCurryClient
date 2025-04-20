@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginSuccessPayload } from '../hooks/authTypes';
+import { AuthState, LoginSuccessPayload } from './type';
 
 const initialState: AuthState = {
   isAuthenticated: false,

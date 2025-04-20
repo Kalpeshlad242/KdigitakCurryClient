@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
-import authReducer from '../hooks/authSlice';
+import authReducer from '../features/Login/slice';
 
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas'; // you'll create this file

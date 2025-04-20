@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import useAuth from './hooks/useAuth';
-import LoginPage from './hooks/LoginPage';
-import SignUpPage from './hooks/SignUpPage';
-import ProtectedPage from './hooks/ProtectedPage';
+import useAuth from './features/Login/useAuth';
+import LoginPage from './features/Login/Login';
+import SignUpPage from './features/Signup/SignUpPage';
+import ProtectedPage from './routes/ProtectedPage';
 
 function App() {
   const { isAuthenticated } = useAuth();
