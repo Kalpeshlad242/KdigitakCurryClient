@@ -1,68 +1,54 @@
-// src/features/LectureList/index.tsx
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLecturesStart } from './slice'; // Action creator for starting the fetch
-import { selectLectures, selectLectureFilters } from './selector'; // Selectors for fetching lectures and filters
-import { Lecture } from './commonTypes'; // Import the correct type
+import { fetchLecturesStart, toggleAttendanceStatus } from './slice';
+import { selectLectures, selectLectureFilters } from './selector';
+import { Lecture } from './commonTypes';
 import Layout from '../../components/Layout';
-import './LectureList.css';  // Import the CSS file
+import './LectureList.css';
 
 const LectureList: React.FC = () => {
   const dummyLectures: Lecture[] = [
     {
       id: '1',
-      courseName: 'Mathematics 101',
-      lectureDate: '2025-04-21',
-      lectureTime: '10:00 AM',
-      attendanceStatus: 'Attended',
+      courseName: 'Introduction to Programming',
+      lectureDate: '2025-03-04',
+      lectureTime: '06:00 pm to 08:00 pm',
+      attendanceStatus: 'Not Attended',
     },
     {
       id: '2',
-      courseName: 'Physics 202',
-      lectureDate: '2025-04-22',
-      lectureTime: '02:00 PM',
-      attendanceStatus: 'Not Attended',
+      courseName: 'Data Structures',
+      lectureDate: '2025-03-08',
+      lectureTime: '12:00 pm to 01:30 pm',
+      attendanceStatus: 'Attended',
     },
     {
       id: '3',
-      courseName: 'Computer Science 301',
-      lectureDate: '2025-04-23',
-      lectureTime: '09:00 AM',
-      attendanceStatus: 'Attended',
+      courseName: 'Algorithms',
+      lectureDate: '2025-03-07',
+      lectureTime: '10:00 am to 11:30 am',
+      attendanceStatus: 'Not Attended',
     },
     {
       id: '4',
-      courseName: 'Chemistry 101',
-      lectureDate: '2025-04-24',
-      lectureTime: '11:00 AM',
-      attendanceStatus: 'Not Attended',
-    },
-    {
-      id: '5',
-      courseName: 'Biology 201',
-      lectureDate: '2025-04-25',
-      lectureTime: '01:00 PM',
+      courseName: 'Web Development',
+      lectureDate: '2025-03-08',
+      lectureTime: '04:00 pm to 06:30 pm',
       attendanceStatus: 'Attended',
     },
-    {
-      id: '6',
-      courseName: 'Literature 101',
-      lectureDate: '2025-04-26',
-      lectureTime: '03:00 PM',
-      attendanceStatus: 'Not Attended',
-    },
   ];
+
   const dispatch = useDispatch();
   const lectures: Lecture[] = dummyLectures;
   const filters = useSelector(selectLectureFilters);
   const [filteredLectures, setFilteredLectures] = useState<Lecture[]>(lectures);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   useEffect(() => {
-    dispatch(fetchLecturesStart()); // Trigger the action that starts fetching lectures
+    dispatch(fetchLecturesStart());
   }, [dispatch]);
 
   useEffect(() => {
-    // Filter the lectures based on the selected filters
     const filtered = lectures.filter((lec) => {
       return (
         (!filters.courseName || lec.courseName.toLowerCase().includes(filters.courseName.toLowerCase())) &&
@@ -74,22 +60,25 @@ const LectureList: React.FC = () => {
   }, [lectures, filters]);
 
   const handleAttendanceToggle = (id: string, status: 'Attended' | 'Not Attended') => {
-    // Handle attendance toggle logic here
-    console.log(`Toggling attendance for lecture with ID: ${id}`);
+    console.log(`Toggling ${id} to ${status}`);
+    dispatch(toggleAttendanceStatus({ id, status }));
+    setOpenDropdownId(null);
   };
 
   return (
     <Layout>
-      <div className="container">
-        <table className="table">
+      <div className="lecture-container">
+        <div className="filters-box">Filters</div>
+
+        <table className="lecture-table">
           <thead>
             <tr>
-              <th>#</th>
+              <th>Sr No.</th>
               <th>Course Name</th>
-              <th>Date</th>
-              <th>Time</th>
+              <th>Lecture Date</th>
+              <th>Lecture Time</th>
               <th>Attendance Status</th>
-              <th>Actions</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -100,19 +89,25 @@ const LectureList: React.FC = () => {
                 <td>{lecture.lectureDate}</td>
                 <td>{lecture.lectureTime}</td>
                 <td>
-                  <span
-                    className={`status-${lecture.attendanceStatus === 'Attended' ? 'attended' : 'not-attended'}`}
-                  >
+                  <span className={`status-badge ${lecture.attendanceStatus === 'Attended' ? 'attended' : 'not-attended'}`}>
                     {lecture.attendanceStatus}
                   </span>
                 </td>
-                <td>
-                  <button
-                    onClick={() => handleAttendanceToggle(lecture.id, lecture.attendanceStatus)}
-                    className="button"
-                  >
-                    Toggle
-                  </button>
+                <td className="action-cell">
+                  <div className="dropdown-container">
+                    <button
+                      onClick={() => setOpenDropdownId(openDropdownId === lecture.id ? null : lecture.id)}
+                      className="action-button"
+                    >
+                      &#x22EE;
+                    </button>
+                    {openDropdownId === lecture.id && (
+                      <div className="dropdown-menu">
+                        <div onClick={() => handleAttendanceToggle(lecture.id, 'Attended')}>Attended</div>
+                        <div onClick={() => handleAttendanceToggle(lecture.id, 'Not Attended')}>Not Attended</div>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

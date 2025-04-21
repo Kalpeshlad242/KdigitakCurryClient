@@ -1,24 +1,28 @@
+// src/features/LectureList/saga.ts
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchLecturesSuccess, fetchLecturesFailure } from './slice';
-import { api } from './api';  // Ensure api is correctly imported
-import { Lecture } from './type';  // Import Lecture type for typing the response
+import { fetchLecturesStart, fetchLecturesSuccess, fetchLecturesFailure } from './slice';
+import { Lecture } from './type';
 
-// Define the return type of the fetchLecturesSaga as a generator function
-function* fetchLecturesSaga(): Generator {
+function* fetchLecturesSaga() {
   try {
-    // Call the API to fetch lectures
-    const response: { data: Lecture[] } = yield call(api.fetchLectures);  // Add response type
-    yield put(fetchLecturesSuccess(response.data));  // Dispatch success action with fetched data
+    // Replace with actual API call
+    const response: Lecture[] = yield call(() =>
+      Promise.resolve([
+        {
+          id: '1',
+          courseName: 'Mathematics 101',
+          lectureDate: '2025-04-21',
+          lectureTime: '10:00 AM',
+          attendanceStatus: 'Attended',
+        },
+      ])
+    );
+    yield put(fetchLecturesSuccess(response));
   } catch (error) {
-    if (error instanceof Error) {
-      yield put(fetchLecturesFailure(error.message));  // Dispatch failure action with error message
-    } else {
-      yield put(fetchLecturesFailure('An unknown error occurred'));  // Handle other types of errors
-    }
+    yield put(fetchLecturesFailure('Failed to fetch lectures'));
   }
 }
 
-// Watcher saga to trigger the fetchLecturesSaga
-export function* watchFetchLectures() {
-  yield takeLatest('lecture/fetchLecturesStart', fetchLecturesSaga);  // Listen for fetchLecturesStart action
+export function* lectureSaga() {
+  yield takeLatest(fetchLecturesStart.type, fetchLecturesSaga);
 }

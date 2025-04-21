@@ -1,28 +1,27 @@
+// src/features/LectureList/slice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Lecture } from './commonTypes';  // Ensure this is the correct path
+import { Lecture } from './type';
 
-// Define the state structure
 interface LectureState {
   lectures: Lecture[];
+  loading: boolean;
+  error: string | null;
   filters: {
     courseName: string;
     lectureDate: string;
-    attendanceStatus: string;
+    attendanceStatus: 'Attended' | 'Not Attended' | '';
   };
-  loading: boolean;
-  error: string | null;
 }
 
-// Initial state for the lecture slice
 const initialState: LectureState = {
   lectures: [],
+  loading: false,
+  error: null,
   filters: {
     courseName: '',
     lectureDate: '',
     attendanceStatus: '',
   },
-  loading: false,
-  error: null,
 };
 
 const lectureSlice = createSlice({
@@ -37,8 +36,14 @@ const lectureSlice = createSlice({
       state.loading = false;
     },
     fetchLecturesFailure(state, action: PayloadAction<string>) {
-      state.error = action.payload;
       state.loading = false;
+      state.error = action.payload;
+    },
+    toggleAttendanceStatus(state, action: PayloadAction<{ id: string; status: 'Attended' | 'Not Attended' }>) {
+      const lecture = state.lectures.find((lec) => lec.id === action.payload.id);
+      if (lecture) {
+        lecture.attendanceStatus = action.payload.status;
+      }
     },
     setLectureFilters(state, action: PayloadAction<LectureState['filters']>) {
       state.filters = action.payload;
@@ -50,6 +55,7 @@ export const {
   fetchLecturesStart,
   fetchLecturesSuccess,
   fetchLecturesFailure,
+  toggleAttendanceStatus,
   setLectureFilters,
 } = lectureSlice.actions;
 
