@@ -1,0 +1,67 @@
+/* src/features/LectureList/LectureList.css */
+
+.container {
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-spacing: 0.5rem;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .table thead {
+    background-color: #1e40af; /* Tailwind bg-blue-600 */
+    color: white;
+  }
+  
+  .table th {
+    border-radius: 0.5rem 0.5rem 0 0; /* Rounded corners for top header */
+  }
+  
+  .table td {
+    border-radius: 0;
+  }
+  
+  .table tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  .table tr:hover {
+    background-color: #f3f4f6; /* Hover effect for rows */
+  }
+  
+  .status-attended {
+    background-color: #48bb78; /* Tailwind bg-green-500 */
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px; /* Rounded pill shape */
+  }
+  
+  .status-not-attended {
+    background-color: #f56565; /* Tailwind bg-red-500 */
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px; /* Rounded pill shape */
+  }
+  
+  .button {
+    background-color: #edf2f7; /* Tailwind bg-gray-200 */
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px; /* Rounded button */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #e2e8f0; /* Tailwind bg-gray-300 */
+  }
+  
