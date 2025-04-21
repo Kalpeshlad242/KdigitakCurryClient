@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './Lecture.css';
+import React, { useState, useEffect } from "react";
+import "./Lecture.css";
 
 interface AddLectureProps {
   lectureToEdit?: any; // Accept lecture data to be edited
@@ -7,12 +7,16 @@ interface AddLectureProps {
   onClose: () => void;
 }
 
-const AddLecture: React.FC<AddLectureProps> = ({ lectureToEdit, onSave, onClose }) => {
-  const [instructorName, setInstructorName] = useState('');
-  const [courseName, setCourseName] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [duration, setDuration] = useState('');
+const AddLecture: React.FC<AddLectureProps> = ({
+  lectureToEdit,
+  onSave,
+  onClose,
+}) => {
+  const [instructorName, setInstructorName] = useState("");
+  const [courseName, setCourseName] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [duration, setDuration] = useState("");
 
   // Pre-fill fields if editing an existing lecture
   useEffect(() => {
@@ -26,14 +30,21 @@ const AddLecture: React.FC<AddLectureProps> = ({ lectureToEdit, onSave, onClose 
   }, [lectureToEdit]);
 
   const handleSave = () => {
-    const lectureData = { id: lectureToEdit?.id, instructorName, courseName, date, time, duration };
+    const lectureData = {
+      id: lectureToEdit?.id,
+      instructorName,
+      courseName,
+      date,
+      time,
+      duration,
+    };
     onSave(lectureData);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>{lectureToEdit ? 'Edit Lecture' : 'Add Lecture'}</h3>
+        <h3>{lectureToEdit ? "Edit Lecture" : "Add Lecture"}</h3>
 
         <div className="form-group">
           <label>Instructor Name</label>
@@ -81,7 +92,9 @@ const AddLecture: React.FC<AddLectureProps> = ({ lectureToEdit, onSave, onClose 
         </div>
 
         <div className="modal-actions">
-          <button onClick={handleSave}>{lectureToEdit ? 'Update' : 'Add'}</button>
+          <button onClick={handleSave}>
+            {lectureToEdit ? "Update" : "Add"}
+          </button>
           <button onClick={onClose}>Cancel</button>
         </div>
       </div>

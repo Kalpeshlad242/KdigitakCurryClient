@@ -36,7 +36,7 @@ function* handleCreateCourse(action: ReturnType<typeof createCourseStart>) {
     const resp: AxiosResponse<Course> = yield call(
       axios.post,
       ENDPOINT,
-      action.payload
+      action.payload,
     );
     yield put(createCourseSuccess(resp.data));
   } catch (err: any) {
@@ -51,7 +51,7 @@ function* handleUpdateCourse(action: ReturnType<typeof updateCourseStart>) {
     const resp: AxiosResponse<Course> = yield call(
       axios.put,
       `${ENDPOINT}/${id}`,
-      body
+      body,
     );
     yield put(updateCourseSuccess(resp.data));
   } catch (err: any) {

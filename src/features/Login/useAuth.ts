@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface User {
   username: string;
@@ -6,13 +6,15 @@ interface User {
 }
 
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
+    undefined,
+  );
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
     if (storedToken && storedUser) {
       setIsAuthenticated(true);
       setUser(JSON.parse(storedUser));
@@ -23,19 +25,19 @@ const useAuth = () => {
 
   const loginUser = (username: string, password: string) => {
     // Simulate login here (for now)
-    const token = 'fake-jwt-token';
-    const user = { username, role: 'admin' };
+    const token = "fake-jwt-token";
+    const user = { username, role: "admin" };
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
 
     setIsAuthenticated(true);
     setUser(user);
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUser(null);
   };
@@ -44,7 +46,7 @@ const useAuth = () => {
     isAuthenticated,
     user,
     loginUser,
-    logoutUser
+    logoutUser,
   };
 };
 

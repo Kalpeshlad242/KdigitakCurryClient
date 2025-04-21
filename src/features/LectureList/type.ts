@@ -3,5 +3,5 @@ export interface Lecture {
   courseName: string;
   lectureDate: string;
   lectureTime: string;
-  attendanceStatus: 'Attended' | 'Not Attended';
+  attendanceStatus: "Attended" | "Not Attended";
 }

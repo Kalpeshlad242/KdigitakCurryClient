@@ -6,11 +6,9 @@ export interface MonthlyTrend {
 }
 
 export interface DashboardStats {
-  
-  monthlyTrends: MonthlyTrend[];  
+  monthlyTrends: MonthlyTrend[];
   totalCourses: number;
   totalLectures: number;
   totalInstructors: number;
   schedulingConflicts: { instructor: string; conflicts: number }[]; // Add this line// Added field
 }
-

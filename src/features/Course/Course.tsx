@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Layout from '../../components/Layout';
-import './Course.css';
-import AddCourseModal from './AddCourseModal';
+import React, { useState } from "react";
+import Layout from "../../components/Layout";
+import "./Course.css";
+import AddCourseModal from "./AddCourseModal";
 
 interface Course {
   id: number;
@@ -19,10 +19,30 @@ interface CourseInput {
 
 const Course: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([
-    { id: 1, name: 'Introduction to Programming', level: 'Beginner',    description: 'Learn the basics of programming.' },
-    { id: 2, name: 'Data Structures',           level: 'Intermediate', description: 'Study advanced data structures and algorithms.' },
-    { id: 3, name: 'Algorithms',                level: 'Intermediate', description: 'Deep dive into complex algorithms.' },
-    { id: 4, name: 'Web Development',           level: 'Advanced',     description: 'Master the principles of object‑oriented programming.' },
+    {
+      id: 1,
+      name: "Introduction to Programming",
+      level: "Beginner",
+      description: "Learn the basics of programming.",
+    },
+    {
+      id: 2,
+      name: "Data Structures",
+      level: "Intermediate",
+      description: "Study advanced data structures and algorithms.",
+    },
+    {
+      id: 3,
+      name: "Algorithms",
+      level: "Intermediate",
+      description: "Deep dive into complex algorithms.",
+    },
+    {
+      id: 4,
+      name: "Web Development",
+      level: "Advanced",
+      description: "Master the principles of object‑oriented programming.",
+    },
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +59,7 @@ const Course: React.FC = () => {
       });
     } else {
       // Adding new: clear fields
-      setSelectedCourse({ name: '', level: '', description: '' });
+      setSelectedCourse({ name: "", level: "", description: "" });
     }
     setIsModalOpen(true);
   };
@@ -52,7 +72,11 @@ const Course: React.FC = () => {
   const handleSaveCourse = (input: CourseInput) => {
     if (input.id != null) {
       // update existing
-      setCourses(courses.map(c => c.id === input.id ? { ...c, ...input } as Course : c));
+      setCourses(
+        courses.map((c) =>
+          c.id === input.id ? ({ ...c, ...input } as Course) : c,
+        ),
+      );
     } else {
       // add new
       const newCourse: Course = {
@@ -65,7 +89,7 @@ const Course: React.FC = () => {
   };
 
   const handleDeleteCourse = (id: number) => {
-    setCourses(courses.filter(c => c.id !== id));
+    setCourses(courses.filter((c) => c.id !== id));
   };
 
   return (

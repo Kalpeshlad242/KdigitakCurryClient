@@ -1,7 +1,7 @@
 // src/pages/Instructor/AddInstructorModal.tsx
 
-import React from 'react';
-import './Instructor.css';
+import React from "react";
+import "./Instructor.css";
 
 interface AddInstructorModalProps {
   newInstructor: {

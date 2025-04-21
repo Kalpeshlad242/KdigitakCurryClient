@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Lecture } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Lecture } from "./type";
 
 interface LectureState {
   lectures: Lecture[];
@@ -14,7 +14,7 @@ const initialState: LectureState = {
 };
 
 const lectureSlice = createSlice({
-  name: 'lecture',
+  name: "lecture",
   initialState,
   reducers: {
     fetchLecturesStart(state) {
@@ -29,7 +29,7 @@ const lectureSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    createLectureStart(state, _action: PayloadAction<Omit<Lecture, 'id'>>) {
+    createLectureStart(state, _action: PayloadAction<Omit<Lecture, "id">>) {
       state.loading = true;
     },
     createLectureSuccess(state, action: PayloadAction<Lecture>) {
@@ -44,7 +44,7 @@ const lectureSlice = createSlice({
       state.loading = true;
     },
     deleteLectureSuccess(state, action: PayloadAction<string>) {
-      state.lectures = state.lectures.filter(l => l.id !== action.payload);
+      state.lectures = state.lectures.filter((l) => l.id !== action.payload);
       state.loading = false;
     },
     deleteLectureFailure(state, action: PayloadAction<string>) {

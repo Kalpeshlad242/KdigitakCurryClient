@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Layout from '../../components/Layout';
-import './Instructor.css';
-import AddInstructorModal from './AddInstructorModal';
+import React, { useState } from "react";
+import Layout from "../../components/Layout";
+import "./Instructor.css";
+import AddInstructorModal from "./AddInstructorModal";
 
 interface Instructor {
   id: number;
@@ -12,19 +12,34 @@ interface Instructor {
 
 const InstructorPage: React.FC = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([
-    { id: 1, name: 'John Doe', phone: '123-456-7890', email: 'john.doe@example.com' },
-    { id: 2, name: 'Jane Smith', phone: '987-654-3210', email: 'jane.smith@example.com' },
-    { id: 3, name: 'Mark Johnson', phone: '555-123-4567', email: 'mark.johnson@example.com' },
+    {
+      id: 1,
+      name: "John Doe",
+      phone: "123-456-7890",
+      email: "john.doe@example.com",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      phone: "987-654-3210",
+      email: "jane.smith@example.com",
+    },
+    {
+      id: 3,
+      name: "Mark Johnson",
+      phone: "555-123-4567",
+      email: "mark.johnson@example.com",
+    },
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
 
-  const [newInstructor, setNewInstructor] = useState<Omit<Instructor, 'id'>>({
-    name: '',
-    phone: '',
-    email: '',
+  const [newInstructor, setNewInstructor] = useState<Omit<Instructor, "id">>({
+    name: "",
+    phone: "",
+    email: "",
   });
 
   const openModal = (instructor?: Instructor) => {
@@ -39,7 +54,7 @@ const InstructorPage: React.FC = () => {
     } else {
       setIsEditing(false);
       setEditId(null);
-      setNewInstructor({ name: '', phone: '', email: '' });
+      setNewInstructor({ name: "", phone: "", email: "" });
     }
     setIsModalOpen(true);
   };
@@ -61,8 +76,8 @@ const InstructorPage: React.FC = () => {
     if (isEditing && editId !== null) {
       setInstructors((prev) =>
         prev.map((inst) =>
-          inst.id === editId ? { ...inst, ...newInstructor } : inst
-        )
+          inst.id === editId ? { ...inst, ...newInstructor } : inst,
+        ),
       );
     } else {
       setInstructors((prev) => [

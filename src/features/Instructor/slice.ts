@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Instructor, InstructorState } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Instructor, InstructorState } from "./type";
 
 const initialState: InstructorState = {
   instructors: [],
@@ -8,7 +8,7 @@ const initialState: InstructorState = {
 };
 
 const instructorSlice = createSlice({
-  name: 'instructor',
+  name: "instructor",
   initialState,
   reducers: {
     fetchInstructorsStart(state) {
@@ -23,7 +23,10 @@ const instructorSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    createInstructorStart(state, action: PayloadAction<Omit<Instructor, 'id'>>) {
+    createInstructorStart(
+      state,
+      action: PayloadAction<Omit<Instructor, "id">>,
+    ) {
       state.loading = true;
       state.error = null;
     },
@@ -41,7 +44,9 @@ const instructorSlice = createSlice({
     },
     updateInstructorSuccess(state, action: PayloadAction<Instructor>) {
       state.loading = false;
-      const idx = state.instructors.findIndex(i => i.id === action.payload.id);
+      const idx = state.instructors.findIndex(
+        (i) => i.id === action.payload.id,
+      );
       if (idx >= 0) state.instructors[idx] = action.payload;
     },
     updateInstructorFailure(state, action: PayloadAction<string>) {
@@ -54,7 +59,9 @@ const instructorSlice = createSlice({
     },
     deleteInstructorSuccess(state, action: PayloadAction<string>) {
       state.loading = false;
-      state.instructors = state.instructors.filter(i => i.id !== action.payload);
+      state.instructors = state.instructors.filter(
+        (i) => i.id !== action.payload,
+      );
     },
     deleteInstructorFailure(state, action: PayloadAction<string>) {
       state.loading = false;

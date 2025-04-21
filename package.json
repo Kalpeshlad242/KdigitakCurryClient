@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.3.6",
     "axios": "^1.8.4",
     "my-app1": "file:",
+    "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^8.1.3",

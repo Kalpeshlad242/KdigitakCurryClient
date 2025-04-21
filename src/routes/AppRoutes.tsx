@@ -1,16 +1,16 @@
 // src/routes/AppRoutes.tsx
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Course } from '../features/Course';   // Importing from index.tsx
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
-import LoginPage from '../features/Login';
-import SignUpPage from '../features/Signup';
-import Dashboard from '../features/Home/Dashboard';
-import Lecture from '../features/Lecture/Lecture'; // Ensure this is correct import for Lecture component
-import Unauthorized from '../features/Unauthorized/Unauthorized';
-import { Instructor } from '../features/Instructor';
-import LectureList from '../features/LectureList';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Course } from "../features/Course"; // Importing from index.tsx
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import LoginPage from "../features/Login";
+import SignUpPage from "../features/Signup";
+import Dashboard from "../features/Home/Dashboard";
+import Lecture from "../features/Lecture/Lecture"; // Ensure this is correct import for Lecture component
+import Unauthorized from "../features/Unauthorized/Unauthorized";
+import { Instructor } from "../features/Instructor";
+import LectureList from "../features/LectureList";
 
 const AppRoutes = () => {
   return (
@@ -18,18 +18,26 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route
         path="/login"
-        element={<PublicRoute><LoginPage /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        }
       />
       <Route
         path="/signup"
-        element={<PublicRoute><SignUpPage /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <SignUpPage />
+          </PublicRoute>
+        }
       />
 
       {/* Protected Routes */}
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={["admin", "instructor"]}>
             <Dashboard />
           </PrivateRoute>
         }
@@ -38,7 +46,7 @@ const AppRoutes = () => {
       <Route
         path="/courses"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={["admin", "instructor"]}>
             <Course />
           </PrivateRoute>
         }
@@ -48,16 +56,16 @@ const AppRoutes = () => {
       <Route
         path="/Lecturer-List"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={["admin", "instructor"]}>
             <LectureList />
           </PrivateRoute>
         }
       />
 
-<Route
+      <Route
         path="/lectures"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={["admin", "instructor"]}>
             <Lecture />
           </PrivateRoute>
         }
@@ -66,7 +74,7 @@ const AppRoutes = () => {
       <Route
         path="/instructor"
         element={
-          <PrivateRoute roles={['admin', 'instructor']}>
+          <PrivateRoute roles={["admin", "instructor"]}>
             <Instructor />
           </PrivateRoute>
         }

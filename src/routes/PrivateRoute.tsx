@@ -1,7 +1,7 @@
 // src/routes/PrivateRoute.tsx
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import useAuth from '../features/Login/useAuth';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import useAuth from "../features/Login/useAuth";
 
 interface PrivateRouteProps {
   children: React.ReactNode;

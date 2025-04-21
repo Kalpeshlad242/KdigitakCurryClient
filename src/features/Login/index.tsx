@@ -1,26 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import { login } from '../Login/slice';
-import { selectAuthError, selectAuthLoading, selectIsAuthenticated, selectUserRole } from '../Login/selector';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { login } from "../Login/slice";
+import {
+  selectAuthError,
+  selectAuthLoading,
+  selectIsAuthenticated,
+  selectUserRole,
+} from "../Login/selector";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const error = useSelector(selectAuthError);
   const loading = useSelector(selectAuthLoading);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const role = useSelector(selectUserRole);
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (role === 'admin') navigate('/admin/dashboard');
-      else if (role === 'instructor') navigate('/instructor/dashboard');
+      if (role === "admin") navigate("/admin/dashboard");
+      else if (role === "instructor") navigate("/instructor/dashboard");
     }
   }, [isAuthenticated, role, navigate]);
 
@@ -33,12 +38,12 @@ const LoginPage: React.FC = () => {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           marginTop: 8,
           padding: 3,
-          backgroundColor: '#f5f5f5',
+          backgroundColor: "#f5f5f5",
           borderRadius: 2,
           boxShadow: 3,
         }}
@@ -75,7 +80,7 @@ const LoginPage: React.FC = () => {
             disabled={loading}
             sx={{ mt: 2 }}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Box>

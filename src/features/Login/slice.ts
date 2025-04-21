@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginPayload, LoginSuccessPayload } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState, LoginPayload, LoginSuccessPayload } from "./type";
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -10,7 +10,7 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     login: (state, _action: PayloadAction<LoginPayload>) => {

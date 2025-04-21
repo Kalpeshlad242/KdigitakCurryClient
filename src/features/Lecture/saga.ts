@@ -1,5 +1,5 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
+import { call, put, takeLatest } from "redux-saga/effects";
+import axios from "axios";
 import {
   fetchLecturesStart,
   fetchLecturesSuccess,
@@ -10,8 +10,8 @@ import {
   deleteLectureStart,
   deleteLectureSuccess,
   deleteLectureFailure,
-} from './slice';
-import { Lecture } from './type';
+} from "./slice";
+import { Lecture } from "./type";
 
 // Use environment variable for API base URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -26,7 +26,10 @@ function* fetchLecturesSaga() {
   }
 }
 
-function* createLectureSaga(action: { type: string; payload: Omit<Lecture, 'id'> }) {
+function* createLectureSaga(action: {
+  type: string;
+  payload: Omit<Lecture, "id">;
+}) {
   try {
     const { data } = yield call(axios.post, API, action.payload);
     yield put(createLectureSuccess(data));

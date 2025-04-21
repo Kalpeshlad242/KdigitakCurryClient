@@ -1,6 +1,6 @@
 // src/features/LectureList/slice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Lecture } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Lecture } from "./type";
 
 interface LectureState {
   lectures: Lecture[];
@@ -9,7 +9,7 @@ interface LectureState {
   filters: {
     courseName: string;
     lectureDate: string;
-    attendanceStatus: 'Attended' | 'Not Attended' | '';
+    attendanceStatus: "Attended" | "Not Attended" | "";
   };
 }
 
@@ -18,14 +18,14 @@ const initialState: LectureState = {
   loading: false,
   error: null,
   filters: {
-    courseName: '',
-    lectureDate: '',
-    attendanceStatus: '',
+    courseName: "",
+    lectureDate: "",
+    attendanceStatus: "",
   },
 };
 
 const lectureSlice = createSlice({
-  name: 'lecturelist',
+  name: "lecturelist",
   initialState,
   reducers: {
     fetchLecturesStart(state) {
@@ -39,13 +39,21 @@ const lectureSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    toggleAttendanceStatus(state, action: PayloadAction<{ id: string; status: 'Attended' | 'Not Attended' }>) {
-      const lecture = state.lectures.find((lec) => lec.id === action.payload.id);
+    toggleAttendanceStatus(
+      state,
+      action: PayloadAction<{
+        id: string;
+        status: "Attended" | "Not Attended";
+      }>,
+    ) {
+      const lecture = state.lectures.find(
+        (lec) => lec.id === action.payload.id,
+      );
       if (lecture) {
         lecture.attendanceStatus = action.payload.status;
       }
     },
-    setLectureFilters(state, action: PayloadAction<LectureState['filters']>) {
+    setLectureFilters(state, action: PayloadAction<LectureState["filters"]>) {
       state.filters = action.payload;
     },
   },

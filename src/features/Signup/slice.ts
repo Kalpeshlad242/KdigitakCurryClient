@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, LoginSuccessPayload } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState, LoginSuccessPayload } from "./type";
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -10,14 +10,17 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     loginRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    login: (state, action: PayloadAction<{ username: string; password: string }>) => {
+    login: (
+      state,
+      action: PayloadAction<{ username: string; password: string }>,
+    ) => {
       // This can trigger login request actions or any additional logic
       state.loading = true;
       state.error = null;
@@ -38,5 +41,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginRequest,login, loginSuccess, loginFailure, logout } = authSlice.actions;
+export const { loginRequest, login, loginSuccess, loginFailure, logout } =
+  authSlice.actions;
 export default authSlice.reducer;

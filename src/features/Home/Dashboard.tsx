@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchDashboardStatsStart } from './slice';
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchDashboardStatsStart } from "./slice";
 import {
   selectDashboardStats,
   selectDashboardLoading,
   selectDashboardError,
-} from './selector';
-import Layout from '../../components/Layout';
+} from "./selector";
+import Layout from "../../components/Layout";
 
 import {
   ResponsiveContainer,
@@ -22,9 +22,9 @@ import {
   Tooltip,
   Legend,
   CartesianGrid,
-} from 'recharts';
+} from "recharts";
 
-const COLORS = ['#4F46E5', '#10B981', '#F59E0B']; // Indigo, Emerald, Amber
+const COLORS = ["#4F46E5", "#10B981", "#F59E0B"]; // Indigo, Emerald, Amber
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -42,23 +42,21 @@ const Dashboard: React.FC = () => {
 
   // Summary data for cards / existing charts
   const summaryData = [
-    { name: 'Courses',     value: stats?.totalCourses     ?? 20 },
-    { name: 'Lectures',    value: stats?.totalLectures    ?? 50 },
-    { name: 'Instructors', value: stats?.totalInstructors ?? 100 },
+    { name: "Courses", value: stats?.totalCourses ?? 20 },
+    { name: "Lectures", value: stats?.totalLectures ?? 50 },
+    { name: "Instructors", value: stats?.totalInstructors ?? 100 },
   ];
 
   // Advanced analytics data (must be provided by your slice)
   const trendData = stats?.monthlyTrends ?? [];
 
   // Fallback for schedulingConflicts in case it's missing in the stats
-  console.log(stats);  // Check what `stats` contains
-const schedulingConflicts = stats?.schedulingConflicts ?? [
-  { instructor: 'John Doe', conflicts: 2 },
-  { instructor: 'Jane Smith', conflicts: 0 },
-  { instructor: 'Mark Johnson', conflicts: 1 },
-];
-
-  
+  console.log(stats); // Check what `stats` contains
+  const schedulingConflicts = stats?.schedulingConflicts ?? [
+    { instructor: "John Doe", conflicts: 2 },
+    { instructor: "Jane Smith", conflicts: 0 },
+    { instructor: "Mark Johnson", conflicts: 1 },
+  ];
 
   return (
     <Layout>

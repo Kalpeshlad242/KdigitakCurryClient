@@ -44,7 +44,8 @@
   margin-top: 20px;
 }
 
-.instructor-table th, .instructor-table td {
+.instructor-table th,
+.instructor-table td {
   border: 1px solid #ddd;
   padding: 12px 20px;
   text-align: left;

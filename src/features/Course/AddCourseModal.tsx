@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './Course.css';
+import React, { useState, useEffect } from "react";
+import "./Course.css";
 
 interface CourseInput {
   id?: number;
@@ -19,9 +19,9 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({
   onSave,
   onClose,
 }) => {
-  const [name, setName] = useState('');
-  const [level, setLevel] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [level, setLevel] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (courseToEdit) {
@@ -29,9 +29,9 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({
       setLevel(courseToEdit.level);
       setDescription(courseToEdit.description);
     } else {
-      setName('');
-      setLevel('');
-      setDescription('');
+      setName("");
+      setLevel("");
+      setDescription("");
     }
   }, [courseToEdit]);
 
@@ -47,7 +47,7 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>{courseToEdit?.id ? 'Edit Course' : 'Add Course'}</h3>
+        <h3>{courseToEdit?.id ? "Edit Course" : "Add Course"}</h3>
 
         <div className="form-group">
           <label>Course Name</label>
@@ -77,7 +77,7 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({
 
         <div className="modal-actions">
           <button onClick={handleSave}>
-            {courseToEdit?.id ? 'Update' : 'Add'}
+            {courseToEdit?.id ? "Update" : "Add"}
           </button>
           <button onClick={onClose}>Cancel</button>
         </div>

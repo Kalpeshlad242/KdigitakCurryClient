@@ -1,23 +1,23 @@
 // src/features/Home/dashboardSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DashboardStats } from './type';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { DashboardStats } from "./type";
 
 const mockDashboardStats: DashboardStats = {
   totalCourses: 10,
   totalLectures: 50,
   totalInstructors: 5,
   monthlyTrends: [
-    { month: 'January', courses: 2, lectures: 10 },
-    { month: 'February', courses: 3, lectures: 15 },
+    { month: "January", courses: 2, lectures: 10 },
+    { month: "February", courses: 3, lectures: 15 },
     // other months
   ],
-  schedulingConflicts: [ // Add this line
-    { instructor: 'John Doe', conflicts: 2 },
-    { instructor: 'Jane Smith', conflicts: 0 },
-    { instructor: 'Mark Johnson', conflicts: 1 },
+  schedulingConflicts: [
+    // Add this line
+    { instructor: "John Doe", conflicts: 2 },
+    { instructor: "Jane Smith", conflicts: 0 },
+    { instructor: "Mark Johnson", conflicts: 1 },
   ],
 };
-
 
 interface DashboardState {
   stats: DashboardStats | null;
@@ -32,7 +32,7 @@ const initialState: DashboardState = {
 };
 
 const dashboardSlice = createSlice({
-  name: 'dashboard',
+  name: "dashboard",
   initialState,
   reducers: {
     fetchDashboardStatsStart(state) {

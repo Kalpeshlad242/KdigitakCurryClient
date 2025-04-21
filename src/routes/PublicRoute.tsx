@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import useAuth from '../features/Login/useAuth';
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import useAuth from "../features/Login/useAuth";
 
 interface PublicRouteProps {
   children: React.ReactNode;

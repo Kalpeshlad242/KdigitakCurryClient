@@ -32,12 +32,14 @@ function* handleFetchInstructors() {
 }
 
 // Create instructor
-function* handleCreateInstructor(action: ReturnType<typeof createInstructorStart>) {
+function* handleCreateInstructor(
+  action: ReturnType<typeof createInstructorStart>,
+) {
   try {
     const response: AxiosResponse<Instructor> = yield call(
       axios.post,
       API,
-      action.payload
+      action.payload,
     );
     yield put(createInstructorSuccess(response.data));
   } catch (error: any) {
@@ -46,13 +48,15 @@ function* handleCreateInstructor(action: ReturnType<typeof createInstructorStart
 }
 
 // Update instructor
-function* handleUpdateInstructor(action: ReturnType<typeof updateInstructorStart>) {
+function* handleUpdateInstructor(
+  action: ReturnType<typeof updateInstructorStart>,
+) {
   try {
     const { id, ...body } = action.payload;
     const response: AxiosResponse<Instructor> = yield call(
       axios.put,
       `${API}/${id}`,
-      body
+      body,
     );
     yield put(updateInstructorSuccess(response.data));
   } catch (error: any) {
@@ -61,7 +65,9 @@ function* handleUpdateInstructor(action: ReturnType<typeof updateInstructorStart
 }
 
 // Delete instructor
-function* handleDeleteInstructor(action: ReturnType<typeof deleteInstructorStart>) {
+function* handleDeleteInstructor(
+  action: ReturnType<typeof deleteInstructorStart>,
+) {
   try {
     yield call(axios.delete, `${API}/${action.payload}`);
     yield put(deleteInstructorSuccess(action.payload));
