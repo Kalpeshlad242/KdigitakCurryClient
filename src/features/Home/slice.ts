@@ -2,12 +2,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DashboardStats } from './type';
 
-// Define the mock data for DashboardStats
 const mockDashboardStats: DashboardStats = {
   totalCourses: 10,
   totalLectures: 50,
   totalInstructors: 5,
+  monthlyTrends: [
+    { month: 'January', courses: 2, lectures: 10 },
+    { month: 'February', courses: 3, lectures: 15 },
+    // other months
+  ],
+  schedulingConflicts: [ // Add this line
+    { instructor: 'John Doe', conflicts: 2 },
+    { instructor: 'Jane Smith', conflicts: 0 },
+    { instructor: 'Mark Johnson', conflicts: 1 },
+  ],
 };
+
 
 interface DashboardState {
   stats: DashboardStats | null;
@@ -31,8 +41,8 @@ const dashboardSlice = createSlice({
     },
     fetchDashboardStatsSuccess(state, action: PayloadAction<DashboardStats>) {
       state.loading = false;
-      // Use mock data here instead of action payload
-      state.stats = mockDashboardStats;
+      // You can use the actual data from the API in production
+      state.stats = action.payload;
     },
     fetchDashboardStatsFailure(state, action: PayloadAction<string>) {
       state.loading = false;
