@@ -3,70 +3,77 @@ import Layout from '../../components/Layout';
 import './Course.css';
 import AddCourseModal from './AddCourseModal';
 
+interface Course {
+  id: number;
+  name: string;
+  level: string;
+  description: string;
+}
+
+interface CourseInput {
+  id?: number;
+  name: string;
+  level: string;
+  description: string;
+}
+
 const Course: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      name: 'Introduction to Programming',
-      level: 'Beginner',
-      description: 'Learn the basics of programming.',
-    },
-    {
-      id: 2,
-      name: 'Data Structures',
-      level: 'Intermediate',
-      description: 'Study advanced data structures and algorithms.',
-    },
-    {
-      id: 3,
-      name: 'Algorithms',
-      level: 'Intermediate',
-      description: 'Deep dive into complex algorithms.',
-    },
-    {
-      id: 4,
-      name: 'Web Development',
-      level: 'Advanced',
-      description: 'Master the principles of object-oriented programming.',
-    },
+  const [courses, setCourses] = useState<Course[]>([
+    { id: 1, name: 'Introduction to Programming', level: 'Beginner',    description: 'Learn the basics of programming.' },
+    { id: 2, name: 'Data Structures',           level: 'Intermediate', description: 'Study advanced data structures and algorithms.' },
+    { id: 3, name: 'Algorithms',                level: 'Intermediate', description: 'Deep dive into complex algorithms.' },
+    { id: 4, name: 'Web Development',           level: 'Advanced',     description: 'Master the principles of object‑oriented programming.' },
   ]);
 
-  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<CourseInput>();
 
-  const openAddCourseModal = () => {
+  const openAddCourseModal = (course?: Course) => {
+    if (course) {
+      // Editing: pass its values
+      setSelectedCourse({
+        id: course.id,
+        name: course.name,
+        level: course.level,
+        description: course.description,
+      });
+    } else {
+      // Adding new: clear fields
+      setSelectedCourse({ name: '', level: '', description: '' });
+    }
     setIsModalOpen(true);
   };
 
   const closeAddCourseModal = () => {
     setIsModalOpen(false);
+    setSelectedCourse(undefined);
   };
 
-  const handleEditCourse = (course: any) => {
-    // Open the Edit modal with the course data (could be handled with another modal)
-    console.log('Editing course:', course);
-    // Implement the logic to handle course editing
+  const handleSaveCourse = (input: CourseInput) => {
+    if (input.id != null) {
+      // update existing
+      setCourses(courses.map(c => c.id === input.id ? { ...c, ...input } as Course : c));
+    } else {
+      // add new
+      const newCourse: Course = {
+        ...input,
+        id: Date.now(),
+      } as Course;
+      setCourses([...courses, newCourse]);
+    }
+    closeAddCourseModal();
   };
 
-  const handleDeleteCourse = (courseId: number) => {
-    setCourses(courses.filter((course) => course.id !== courseId));
-    console.log(`Deleted course with ID: ${courseId}`);
+  const handleDeleteCourse = (id: number) => {
+    setCourses(courses.filter(c => c.id !== id));
   };
 
   return (
     <Layout>
       <div className="course-container">
-        <div className="filter-bar">
-          <label>Filters</label>
-          <select>
-            <option>Course</option>
-            {/* Add more filtering options here */}
-          </select>
-        </div>
-
         <div className="course-header">
           <h2>Courses</h2>
-          <button className="add-course" onClick={openAddCourseModal}>
+          <button className="add-course" onClick={() => openAddCourseModal()}>
             Add Course
           </button>
         </div>
@@ -82,16 +89,16 @@ const Course: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course, index) => (
+            {courses.map((course, idx) => (
               <tr key={course.id}>
-                <td>{index + 1}</td>
+                <td>{idx + 1}</td>
                 <td>{course.name}</td>
                 <td>{course.level}</td>
                 <td>{course.description}</td>
                 <td>
                   <button
                     className="edit-btn"
-                    onClick={() => handleEditCourse(course)}
+                    onClick={() => openAddCourseModal(course)}
                   >
                     Edit
                   </button>
@@ -107,7 +114,13 @@ const Course: React.FC = () => {
           </tbody>
         </table>
 
-        {isModalOpen && <AddCourseModal onClose={closeAddCourseModal} />}
+        {isModalOpen && (
+          <AddCourseModal
+            courseToEdit={selectedCourse}
+            onSave={handleSaveCourse}
+            onClose={closeAddCourseModal}
+          />
+        )}
       </div>
     </Layout>
   );
