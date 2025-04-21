@@ -1,5 +1,3 @@
-// src/pages/Instructor/Instructor.tsx
-
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import './Instructor.css';
@@ -20,14 +18,37 @@ const InstructorPage: React.FC = () => {
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+
   const [newInstructor, setNewInstructor] = useState<Omit<Instructor, 'id'>>({
     name: '',
     phone: '',
     email: '',
   });
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = (instructor?: Instructor) => {
+    if (instructor) {
+      setIsEditing(true);
+      setEditId(instructor.id);
+      setNewInstructor({
+        name: instructor.name,
+        phone: instructor.phone,
+        email: instructor.email,
+      });
+    } else {
+      setIsEditing(false);
+      setEditId(null);
+      setNewInstructor({ name: '', phone: '', email: '' });
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsEditing(false);
+    setEditId(null);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,20 +58,31 @@ const InstructorPage: React.FC = () => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    setInstructors((prev) => [
-      ...prev,
-      { id: prev.length + 1, ...newInstructor },
-    ]);
+    if (isEditing && editId !== null) {
+      setInstructors((prev) =>
+        prev.map((inst) =>
+          inst.id === editId ? { ...inst, ...newInstructor } : inst
+        )
+      );
+    } else {
+      setInstructors((prev) => [
+        ...prev,
+        { id: prev.length + 1, ...newInstructor },
+      ]);
+    }
 
-    setNewInstructor({ name: '', phone: '', email: '' });
     closeModal();
+  };
+
+  const handleDelete = (id: number) => {
+    setInstructors((prev) => prev.filter((inst) => inst.id !== id));
   };
 
   return (
     <Layout>
       <div className="instructor-page">
         <h2>Instructor Management</h2>
-        <button className="add-instructor-btn" onClick={openModal}>
+        <button className="add-instructor-btn" onClick={() => openModal()}>
           Add Instructor
         </button>
 
@@ -72,8 +104,18 @@ const InstructorPage: React.FC = () => {
                 <td>{instructor.phone}</td>
                 <td>{instructor.email}</td>
                 <td>
-                  <button className="action-btn">Edit</button>
-                  <button className="action-btn">Delete</button>
+                  <button
+                    className="action-btn"
+                    onClick={() => openModal(instructor)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="action-btn"
+                    onClick={() => handleDelete(instructor.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -82,11 +124,11 @@ const InstructorPage: React.FC = () => {
 
         {isModalOpen && (
           <AddInstructorModal
-          newInstructor={newInstructor}
-          onClose={closeModal}  // ✅ fix here
-          onChange={handleInputChange}
-          onSubmit={handleFormSubmit}
-        />
+            newInstructor={newInstructor}
+            onClose={closeModal}
+            onChange={handleInputChange}
+            onSubmit={handleFormSubmit}
+          />
         )}
       </div>
     </Layout>
