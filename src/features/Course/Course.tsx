@@ -5,15 +5,6 @@ import AddCourseModal from './AddCourseModal';
 
 const Course: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openAddCourseModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeAddCourseModal = () => {
-    setIsModalOpen(false);
-  };
-
   const [courses, setCourses] = useState([
     {
       id: 1,
@@ -36,15 +27,30 @@ const Course: React.FC = () => {
     {
       id: 4,
       name: 'Web Development',
-      level: 'Advance',
+      level: 'Advanced',
       description: 'Master the principles of object-oriented programming.',
     },
   ]);
 
-  // Action handling logic for edit or delete
-  const handleActionClick = (courseId: number) => {
-    console.log(`Action clicked for course with ID: ${courseId}`);
-    // Implement logic for editing or deleting a course here
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+
+  const openAddCourseModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeAddCourseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEditCourse = (course: any) => {
+    // Open the Edit modal with the course data (could be handled with another modal)
+    console.log('Editing course:', course);
+    // Implement the logic to handle course editing
+  };
+
+  const handleDeleteCourse = (courseId: number) => {
+    setCourses(courses.filter((course) => course.id !== courseId));
+    console.log(`Deleted course with ID: ${courseId}`);
   };
 
   return (
@@ -60,7 +66,9 @@ const Course: React.FC = () => {
 
         <div className="course-header">
           <h2>Courses</h2>
-          <button className="add-course" onClick={openAddCourseModal}>Add Course</button>
+          <button className="add-course" onClick={openAddCourseModal}>
+            Add Course
+          </button>
         </div>
 
         <table className="course-table">
@@ -81,10 +89,17 @@ const Course: React.FC = () => {
                 <td>{course.level}</td>
                 <td>{course.description}</td>
                 <td>
-                  <button 
-                    className="action-btn" 
-                    onClick={() => handleActionClick(course.id)}>
-                    •••
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEditCourse(course)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteCourse(course.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>
