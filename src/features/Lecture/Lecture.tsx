@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import './Lecture.css';
 import AddLecture from './AddLecturer'; // Import AddLecture Modal
 
-const Lecture = () => {
+const Lecture: React.FC = () => {
   const [lectures, setLectures] = useState([
     {
       id: 1,
@@ -40,18 +40,40 @@ const Lecture = () => {
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
+  const [selectedLecture, setSelectedLecture] = useState<any>(null); // Store the lecture being edited
   const [filter, setFilter] = useState(''); // Filter state for lecture search
 
-  const openAddLectureModal = () => {
+  const openAddLectureModal = (lecture?: any) => {
+    if (lecture) {
+      setSelectedLecture(lecture); // Set lecture data for editing
+    } else {
+      setSelectedLecture(null); // Set to null for adding new lecture
+    }
     setIsModalOpen(true); // Open the modal
   };
 
   const closeAddLectureModal = () => {
     setIsModalOpen(false); // Close the modal
+    setSelectedLecture(null); // Clear selected lecture
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value); // Update filter state
+  };
+
+  const handleSaveLecture = (lecture: any) => {
+    if (lecture.id) {
+      // Update existing lecture
+      setLectures(lectures.map((l) => (l.id === lecture.id ? lecture : l)));
+    } else {
+      // Add new lecture
+      setLectures([...lectures, { ...lecture, id: Date.now() }]);
+    }
+    closeAddLectureModal();
+  };
+
+  const handleDeleteLecture = (id: number) => {
+    setLectures(lectures.filter((lecture) => lecture.id !== id));
   };
 
   return (
@@ -70,7 +92,9 @@ const Lecture = () => {
 
         <div className="lecture-header">
           <h2>Lecture</h2>
-          <button className="add-lecture" onClick={openAddLectureModal}>Add Lecture</button>
+          <button className="add-lecture" onClick={() => openAddLectureModal()}>
+            Add Lecture
+          </button>
         </div>
 
         <table className="lecture-table">
@@ -97,8 +121,18 @@ const Lecture = () => {
                   <td>{lecture.time}</td>
                   <td>{lecture.duration}</td>
                   <td>
-                    <button className="action-btn" onClick={() => alert('Editing ' + lecture.courseName)}>Edit</button>
-                    <button className="action-btn" onClick={() => alert('Deleting ' + lecture.courseName)}>Delete</button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => openAddLectureModal(lecture)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteLecture(lecture.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -106,7 +140,13 @@ const Lecture = () => {
         </table>
       </div>
 
-      {isModalOpen && <AddLecture onClose={closeAddLectureModal} />} {/* Modal Component */}
+      {isModalOpen && (
+        <AddLecture
+          lectureToEdit={selectedLecture}
+          onSave={handleSaveLecture}
+          onClose={closeAddLectureModal}
+        />
+      )}
     </Layout>
   );
 };
