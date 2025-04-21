@@ -54,6 +54,15 @@ const AppRoutes = () => {
         }
       />
 
+<Route
+        path="/lectures"
+        element={
+          <PrivateRoute roles={['admin', 'instructor']}>
+            <Lecture />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/instructor"
         element={
